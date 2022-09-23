@@ -27,7 +27,7 @@ func main() {
 		x, y = rl.GetMouseX(), rl.GetMouseY()
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
-		rl.DrawText("Congrats! You created your first window!", w*24/100, h/2, 20, rl.LightGray)
+		rl.DrawText("Alt + Enter to get in fullscreen mode!", w*24/100, h/2, 20, rl.LightGray)
 		rl.DrawRectangleLines(w*2/100, h*2/100, w-w*4/100, h-h*4/100, rl.LightGray)
 		rl.DrawCircle(x, y, 30, rl.White)
 		rl.EndDrawing()
