@@ -26,7 +26,6 @@ func input() {
 	// process events
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsMouseButtonPressed(rl.MouseRightButton) {
 		mouseButtonPressed = true
-		gameOngoing = true
 	}
 
 }
