@@ -31,7 +31,7 @@ var (
 	playerMove         bool = false // If bool false, its whites turn, if true, its blacks turn
 	//positions          byte = 0
 	musicPaused 	   bool
-	music       rl.Music
+	music       	   rl.Music
 )
 
 func drawScene() {
@@ -42,7 +42,6 @@ func drawScene() {
 }
 
 func input() {
-	//
 	if rl.IsKeyPressed(rl.KeyM) {
 		musicPaused = !musicPaused
 	}
@@ -53,8 +52,8 @@ func input() {
 
 		if rl.IsWindowFullscreen() {
 			rl.SetWindowSize(rl.GetMonitorWidth(display), rl.GetMonitorHeight(display))
-		} else {
-			rl.SetWindowSize(int(WIDTH), int(HEIGHT))
+			} else {
+				rl.SetWindowSize(int(WIDTH), int(HEIGHT))
 		}
 		rl.ToggleFullscreen()
 	}
@@ -83,6 +82,8 @@ func update() {
 	}
 }
 
+// * render is a funcion that starts every single menu and texture
+// TODO Check if the border works on every single screen
 func render() {
 	rl.BeginDrawing()
 	rl.ClearBackground(rl.Black)
@@ -104,7 +105,7 @@ func renderMenu() {
 }
 
 func renderBoard() {
-	// Render a board thats more than a texture
+	// TODO Render a board thats more than a texture
 }
 
 func gameLogic() {
@@ -114,6 +115,7 @@ func gameLogic() {
 	}
 }
 
+// * init is a func that... inits the basic stuff for raylib to work
 func initStuff() {
 	rl.InitWindow(WIDTH, HEIGHT, WINDOW_TITLE)
 	rl.SetTargetFPS(60)
@@ -126,6 +128,8 @@ func initStuff() {
 	tbackground = rl.LoadTexture("./textures/background.jpg")
 }
 
+
+// * quit unloads everything that was loaded on init and quits
 func quit() {
 	rl.UnloadTexture(twhite)
 	rl.UnloadTexture(tblack)
@@ -137,9 +141,11 @@ func quit() {
 	rl.CloseWindow()
 }
 
+
+// * main calls every single other funcion
 func main() {
 	initStuff()
-	for !rl.WindowShouldClose() { // Using executing makes the windows insta close. WHY
+	for !rl.WindowShouldClose() { // ? Using executing makes the windows insta close. WHY
 		input()
 		update()
 		render()
