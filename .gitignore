@@ -1,2 +1,2 @@
 *.log
-test.go
+./logs
