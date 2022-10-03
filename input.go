@@ -4,9 +4,11 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func input() {
+// * input manages every single input avaliable.
+func (c *C4) input() {
 	logger.Debug().Println("input() called.")
 
+	// Music toggle
 	if rl.IsKeyPressed(rl.KeyM) {
 		musicPaused = !musicPaused
 	}
@@ -18,14 +20,16 @@ func input() {
 		if rl.IsWindowFullscreen() {
 			rl.SetWindowSize(rl.GetMonitorWidth(display), rl.GetMonitorHeight(display))
 		} else {
-			rl.SetWindowSize(int(WIDTH), int(HEIGHT))
+			rl.SetWindowSize(int(width), int(HEIGHT))
 		}
 		rl.ToggleFullscreen()
 	}
 
-	// process events
+	// Process events
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsMouseButtonPressed(rl.MouseRightButton) {
 		mouseButtonPressed = true
+	} else if !rl.IsMouseButtonPressed(rl.MouseLeftButton) || !rl.IsMouseButtonPressed(rl.MouseRightButton){
+		mouseButtonPressed = false
 	}
 
 }

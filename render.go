@@ -1,54 +1,62 @@
 package main
 
 import (
+	// "fmt"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 // * render is a funcion that starts every single menu and texture
-// TODO Check if the border works on every single screen
-func render() {
+func (c *C4) render() {
 	logger.Debug().Println("render() called.")
 
 	rl.BeginDrawing()
-	defer rl.EndDrawing() 
+	defer rl.EndDrawing()
 
 	rl.ClearBackground(rl.Black)
-	rl.DrawRectangleLines(WIDTH*2/100, HEIGHT*2/100, WIDTH-WIDTH*4/100, HEIGHT-HEIGHT*4/100, rl.LightGray)
-	
+	rl.DrawRectangleLines(width*2/100, HEIGHT*3/100, width-width*4/100, HEIGHT-HEIGHT*6/100, rl.LightGray)
+
 	menu()
-	drawTxr()
+	txr()
 }
 
+// * draws the main menu
 func menu() {
 	logger.Debug().Println("menu() called.")
-
+	
 	if !gameOngoing {
-		rl.DrawText("Welcome to Connect 4!\nPress enter or click!", WIDTH*32/100, HEIGHT/12, 28, rl.LightGray)
+		// Perfectly centered rectangle
+		// rl.DrawRectangle((width - (gridSize*COLLUMNS))/2, gridSize, gridSize*COLLUMNS, gridSize*ROWS, rl.Gold)
+		rl.DrawText("Welcome to Connect 4!", width*32/100, HEIGHT/12, 28, rl.LightGray)
+		rl.DrawText("Press enter or click to start!", width*25/100, HEIGHT-HEIGHT/4, 28, rl.LightGray)
+		rl.DrawTexture(txrLogo, (width-278)/2, HEIGHT/14*3, rl.White)
 		if mouseButtonPressed {
 			gameOngoing = true
-			board()
 		}
-	} else {
+	} else if gameOngoing {
 		board()
 	}
 }
 
+// * draws the board
 func board() {
 	// TODO Change Music when here
 	if gameOngoing {
-		rl.DrawText("BOARD!", WIDTH*32/100, HEIGHT/12, 28, rl.LightGray)
+			
+		rl.DrawTexture(txrBlack, 0, 200, rl.White)
+		rl.DrawText("BOARD!", width*32/100, HEIGHT/12, 28, rl.LightGray)
 		if mouseButtonPressed {
 			gameOngoing = false
 		}
 	}
-	
-// TODO Render a board thats more than a texture
+
+	// TODO Board Logic
 }
 
-func drawTxr() {
+// * draws textures
+func txr() {
 	logger.Debug().Println("drawTxr() called.")
-	// rl.DrawTexture(tbackground, 100, 0, rl.White)
-	// rl.DrawTexture(tboard, 0, 0, rl.Blue)
-	// rl.DrawTexture(twhite, 0, 100, rl.White)
-	rl.DrawTexture(tblack, 0, 200, rl.White)
+
+	// rl.DrawTexture(txrWhite, 0, 100, rl.White)
+	// rl.DrawTexture(txrBackground, 100, 0, rl.White)
+	// rl.DrawTexture(txrBoard, 0, 0, rl.Blue)
 }

@@ -27,7 +27,10 @@ func SetLogFile() *os.File {
 	return filePath
 }
 
-// TODO Make these a loop
+
+
+// * All of these use "Reciver Functions"
+// Limit from what objects they can be called from. It cannot be called by itself anymore.
 // * Case for Normal Logging
 func (l *LogDir) Info() *log.Logger {
 	getFilePath := SetLogFile()

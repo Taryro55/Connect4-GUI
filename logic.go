@@ -1,11 +1,8 @@
 package main
 
-import (
-	// rl "github.com/gen2brain/raylib-go/raylib"
-)
+// rl "github.com/gen2brain/raylib-go/raylib"
 
-
-func gameLogic() {
+func (c *C4) gameLogic() {
 	if gameOngoing && (!gameOver || !gameDraw) {
 		// logic
 	}

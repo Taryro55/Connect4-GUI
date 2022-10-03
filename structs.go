@@ -4,12 +4,11 @@ import (
 	// "log"
 )
 
+// * Custom datatypes
 
-type LogDir struct {
+type LogDir struct { // Structs for logging
 	LogDirectory string
 }
-
-// TODO Check if needed.
-// type Game struct {
-// 	running bool
-// }
+type C4 struct { // Board struct
+	// board [][]int32
+}

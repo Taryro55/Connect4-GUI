@@ -1,16 +1,23 @@
 package main
 
 import (
+	"math"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 var (
-	twhite      rl.Texture2D
-	tblack      rl.Texture2D
-	tboard      rl.Texture2D
-	tbackground rl.Texture2D
+	txrWhite      rl.Texture2D
+	txrBlack      rl.Texture2D
+	txrBoard      rl.Texture2D
+	txrBackground rl.Texture2D
+	txrLogo		  rl.Texture2D
 	// mousePos    rl.Vector2
 	music       rl.Music
+)
+
+var (
+	width = (HEIGHT/9) * 16
+	gridSize = int32(math.Round((math.Hypot(float64(width), float64(HEIGHT))) * 0.1))
 )
 
 var (
@@ -21,6 +28,6 @@ var (
 	gameOngoing        bool = false
 	mouseButtonPressed bool = false
 	// playerMove         bool = false // If bool false, its whites turn, if true, its blacks turn
-	//positions          byte = 0
+	// positions          byte = 0
 	musicPaused 	   bool
 )

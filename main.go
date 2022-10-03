@@ -7,7 +7,10 @@ import (
 
 var logger = logging()
 
-func update() {
+
+
+// * reciver func that is constantly looping listening for events
+func (c *C4) update() {
 	logger.Debug().Println("update() called.")
 
 	executing = !rl.WindowShouldClose()
@@ -21,21 +24,21 @@ func update() {
 	}
 }
 
-// * init is a func that... inits the basic stuff for raylib to work
-func init() {
-	logger.Debug().Println("init() executed.")	
 
-	rl.InitWindow(WIDTH, HEIGHT, WINDOW_TITLE)
+// * starts basic stuff
+func init() {
+	logger.Debug().Println("init() executed.")
+
+	rl.InitWindow(width, HEIGHT, WINDOW_TITLE)
 	rl.SetTargetFPS(60)
 	rl.SetMouseScale(1.0, 1.0)
 
 	// textures
-	// TODO make a func thats on render thats called and loops over every single item on textures to load, same for unloading
-	twhite = rl.LoadTexture("./textures/red.jpg")
-	tblack = rl.LoadTexture("./textures/oreo.png")
-	tboard = rl.LoadTexture("./textures/board.png")
-	tbackground = rl.LoadTexture("./textures/background.jpg")
-	
+	txrWhite = rl.LoadTexture(TXR_PATH + "/red.jpg")
+	txrBlack = rl.LoadTexture(TXR_PATH + "/oreo.png")
+	txrBoard = rl.LoadTexture(TXR_PATH + "/board.png")
+	txrBackground = rl.LoadTexture(TXR_PATH + "/background.jpg")
+	txrLogo = rl.LoadTexture(TXR_PATH + "/logo.png")
 
 	// Loads music
 	rl.InitAudioDevice()
@@ -45,32 +48,35 @@ func init() {
 }
 
 
-// * quit unloads everything that was loaded on init and quits
+// * unloads everything that was loaded on init and quits
 func quit() {
 	logger.Debug().Println("quit() called.")
 
-	rl.UnloadTexture(twhite)
-	rl.UnloadTexture(tblack)
-	rl.UnloadTexture(tboard)
+	rl.UnloadTexture(txrWhite)
+	rl.UnloadTexture(txrBlack)
+	rl.UnloadTexture(txrBoard)
+	rl.UnloadTexture(txrBackground)
+	rl.UnloadTexture(txrLogo)
+
 	rl.UnloadMusicStream(music)
 	rl.CloseAudioDevice()
-	rl.UnloadTexture(tbackground)
 
 	rl.CloseWindow()
 }
 
 
-
 // * main calls every single other funcion
 func main() {
+	connect4 := C4{}
 	logger.Debug().Println("main() called.")
-	for executing { // ? Using executing makes the windows insta close. WHY		
-		logger.Debug().Println("in executing loop.")
+	for executing {
+		// fmt.Println(mouseButtonPressed, gameOngoing)
 
-		input()
-		update()
-		render()
-		gameLogic()
+		logger.Debug().Println("in executing loop.")
+		connect4.input()
+		connect4.update()
+		connect4.render()
+		connect4.gameLogic()
 	}
 	quit()
 }
