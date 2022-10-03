@@ -53,6 +53,7 @@ func board() {
 }
 
 // * draws textures
+// ? Do I need this func?
 func txr() {
 	logger.Debug().Println("drawTxr() called.")
 
