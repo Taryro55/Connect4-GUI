@@ -64,8 +64,8 @@ func board() {
 }
 func grid(col, row int) {
 	rl.DrawCircle(
-		int32(col*int(gridSize)+int(boardVer.xPos)+int(gridRadius)),
-		int32(row*int(gridSize)+int(boardVer.yPos)+int(gridRadius)),
+		int32(col*int(gridSize)+int(boardVer.xPos)+int(1.3*gridRadius)),
+		int32(row*int(gridSize)+int(boardVer.yPos)+int(1.3*gridRadius)),
 		gridRadius, rl.White)
 }
 

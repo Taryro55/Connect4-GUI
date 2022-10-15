@@ -16,6 +16,7 @@ func isEven(l int) bool {
 
 func (c *C4) logic() {
 	c.menuLogic()
+	centerHelper()
 }
 
 
