@@ -5,29 +5,60 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+
+
 var (
+	width    = (HEIGHT / 9) * 16
+
+	gridSize = int32(math.Round((math.Hypot(float64(width), float64(HEIGHT))) * 0.1)*0.6)
+	gridRadius = float32(gridSize*5/13)
+
+	offsetX = width*2/100
+	offsetY = HEIGHT*3/100
+
+	blinkVer = vertice{
+		0,
+		HEIGHT/12*(40/35*8),
+		(HEIGHT/8), 
+		(HEIGHT/16)}
+	boardVer = vertice{ // vertice and magnitude on X & Y
+		(width/2)-(gridSize*7)/2,
+		HEIGHT-gridSize*6-offsetY,
+		gridSize*7,
+		gridSize*6} 
+)
+
+var (
+	// options
+	musicPaused		   bool
+
+	// main events
+	debug              bool = true
+	executing          bool = true
+
+	// game events
+	gameOver           bool
+	gameDraw           bool
+	gameOngoing        bool
+
+	// general events
+	mouseButtonPressed bool
+	shouldBlink		   bool
+	isOponentAI		   bool
+	oponentSelected	   bool
+	boardRendered      bool
+	firstLoop		   bool = true
+	runningTimeInt 	   int
+	runningTime		   float64
+)
+
+var (
+	// textures, vectors, any rl types.
 	txrWhite      rl.Texture2D
 	txrBlack      rl.Texture2D
 	txrBoard      rl.Texture2D
 	txrBackground rl.Texture2D
-	txrLogo		  rl.Texture2D
+	txrLogo       rl.Texture2D
 	// mousePos    rl.Vector2
-	music       rl.Music
-)
-
-var (
-	width = (HEIGHT/9) * 16
-	gridSize = int32(math.Round((math.Hypot(float64(width), float64(HEIGHT))) * 0.1))
-)
-
-var (
-	debug 			   bool = true
-	executing          bool = true
-	gameOver           bool = false
-	gameDraw           bool = false
-	gameOngoing        bool = false
-	mouseButtonPressed bool = false
-	// playerMove         bool = false // If bool false, its whites turn, if true, its blacks turn
-	// positions          byte = 0
-	musicPaused 	   bool
+	music rl.Music
 )

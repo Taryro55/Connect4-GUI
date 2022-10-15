@@ -2,12 +2,13 @@ package main
 
 import (
 	// "fmt"
+
+	// "fmt"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 var logger = logging()
-
-
 
 // * reciver func that is constantly looping listening for events
 func (c *C4) update() {
@@ -22,8 +23,18 @@ func (c *C4) update() {
 	} else if !musicPaused {
 		rl.ResumeMusicStream(music)
 	}
-}
 
+	// Selection of oponent
+	
+	if isEven(runningTimeInt) {
+		shouldBlink = true
+	} else if !isEven(runningTimeInt) {
+		shouldBlink = false
+	}
+
+	runningTime = rl.GetTime()
+	runningTimeInt = int(runningTime)
+}
 
 // * starts basic stuff
 func init() {
@@ -32,6 +43,8 @@ func init() {
 	rl.InitWindow(width, HEIGHT, WINDOW_TITLE)
 	rl.SetTargetFPS(60)
 	rl.SetMouseScale(1.0, 1.0)
+
+	
 
 	// textures
 	txrWhite = rl.LoadTexture(TXR_PATH + "/red.jpg")
@@ -46,7 +59,6 @@ func init() {
 	musicPaused = false
 	rl.PlayMusicStream(music)
 }
-
 
 // * unloads everything that was loaded on init and quits
 func quit() {
@@ -64,7 +76,6 @@ func quit() {
 	rl.CloseWindow()
 }
 
-
 // * main calls every single other funcion
 func main() {
 	connect4 := C4{}
@@ -76,7 +87,7 @@ func main() {
 		connect4.input()
 		connect4.update()
 		connect4.render()
-		connect4.gameLogic()
+		connect4.logic()
 	}
 	quit()
 }

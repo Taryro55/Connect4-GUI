@@ -13,6 +13,15 @@ func (c *C4) input() {
 		musicPaused = !musicPaused
 	}
 
+	// Oponent select
+	if !oponentSelected {
+		if rl.IsKeyPressed(rl.KeyRight) && !isOponentAI {
+			isOponentAI = true
+		} else if rl.IsKeyPressed(rl.KeyLeft) && isOponentAI {
+			isOponentAI = false
+		}
+	}
+	
 	// Fullscreen When Alt+Enter
 	if rl.IsKeyPressed(257) && (rl.IsKeyDown(342) || rl.IsKeyDown(346)) {
 		display := rl.GetCurrentMonitor()

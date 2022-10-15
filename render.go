@@ -5,6 +5,7 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+
 // * render is a funcion that starts every single menu and texture
 func (c *C4) render() {
 	logger.Debug().Println("render() called.")
@@ -13,51 +14,64 @@ func (c *C4) render() {
 	defer rl.EndDrawing()
 
 	rl.ClearBackground(rl.Black)
-	rl.DrawRectangleLines(width*2/100, HEIGHT*3/100, width-width*4/100, HEIGHT-HEIGHT*6/100, rl.LightGray)
-
-	menu()
-	txr()
+	rl.DrawRectangleLines(offsetX, offsetY, width-(2*offsetX), HEIGHT-(2*offsetY), rl.LightGray)
 }
+
 
 // * draws the main menu
-func menu() {
-	logger.Debug().Println("menu() called.")
+func mainmenu() {
+	rl.DrawText("Welcome to Connect 4!", width*32/100, HEIGHT/12, 28, rl.LightGray)
+	rl.DrawText("Press enter or click to start!", width*25/100, HEIGHT-HEIGHT/4, 28, rl.LightGray)
+	rl.DrawTexture(txrLogo, (width-278)/2, HEIGHT/14*3, rl.White)
+}
+
+
+// * Oponent selection screen
+func oponentSelect() {
+	// TODO Change Music when here			
+	rl.DrawText("Do you wish to play with someone or against a bot?", width*10/100, HEIGHT/12, 28, rl.LightGray)
 	
-	if !gameOngoing {
-		// Perfectly centered rectangle
-		// rl.DrawRectangle((width - (gridSize*COLLUMNS))/2, gridSize, gridSize*COLLUMNS, gridSize*ROWS, rl.Gold)
-		rl.DrawText("Welcome to Connect 4!", width*32/100, HEIGHT/12, 28, rl.LightGray)
-		rl.DrawText("Press enter or click to start!", width*25/100, HEIGHT-HEIGHT/4, 28, rl.LightGray)
-		rl.DrawTexture(txrLogo, (width-278)/2, HEIGHT/14*3, rl.White)
-		if mouseButtonPressed {
-			gameOngoing = true
-		}
-	} else if gameOngoing {
-		board()
-	}
+	rl.DrawText("PvP", (width/2)-(2*gridSize), HEIGHT/12*(40/35*8), 28, rl.LightGray)
+	rl.DrawText("AI", (width/2)+(2*gridSize), HEIGHT/12*(40/35*8), 28, rl.LightGray)
+	}	
+func blink(xPos int32) {	
+	rl.DrawRectangleLines(
+		xPos-(HEIGHT/100), 
+		blinkVer.yPos, 
+		blinkVer.xMag, 
+		blinkVer.yMag, rl.LightGray)
 }
 
-// * draws the board
+
+func pvp() {
+	rl.DrawText("Game on, let the better human win!", width*10/100, HEIGHT/12, 28, rl.LightGray)
+}
+func pvai() {
+	rl.DrawText("Game on, I wish you the best...", width*10/100, HEIGHT/12, 28, rl.LightGray)
+}
+
+
 func board() {
-	// TODO Change Music when here
-	if gameOngoing {
-			
-		rl.DrawTexture(txrBlack, 0, 200, rl.White)
-		rl.DrawText("BOARD!", width*32/100, HEIGHT/12, 28, rl.LightGray)
-		if mouseButtonPressed {
-			gameOngoing = false
-		}
+	// rectangle for the board
+	rl.DrawRectangle(
+		boardVer.xPos, 
+		boardVer.yPos,
+		boardVer.xMag,
+		boardVer.yMag, rl.DarkBlue)
+	if !boardRendered {
+		boardRendered = true
 	}
-
-	// TODO Board Logic
+}
+func grid(col, row int) {
+	rl.DrawCircle(
+		int32(col*int(gridSize)+int(boardVer.xPos)+int(gridRadius)),
+		int32(row*int(gridSize)+int(boardVer.yPos)+int(gridRadius)),
+		gridRadius, rl.White)
 }
 
-// * draws textures
-// ? Do I need this func?
-func txr() {
-	logger.Debug().Println("drawTxr() called.")
 
-	// rl.DrawTexture(txrWhite, 0, 100, rl.White)
-	// rl.DrawTexture(txrBackground, 100, 0, rl.White)
-	// rl.DrawTexture(txrBoard, 0, 0, rl.Blue)
+// TODO remove, only for debug
+func centerHelper() {
+	rl.DrawLine(width/2, 0, width/2, HEIGHT, rl.Beige)
+	rl.DrawLine(0, HEIGHT/2, width, HEIGHT/2, rl.Beige)
 }
