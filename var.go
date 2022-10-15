@@ -16,12 +16,12 @@ var (
 	offsetX = width*2/100
 	offsetY = HEIGHT*3/100
 
-	blinkVer = vertice{
+	blinkVer = Vertice{
 		0,
 		HEIGHT/12*(40/35*8),
 		(HEIGHT/8), 
 		(HEIGHT/16)}
-	boardVer = vertice{ // vertice and magnitude on X & Y
+	boardVer = Vertice{ // vertice and magnitude on X & Y
 		(width/2)-(gridSize*7)/2,
 		HEIGHT-gridSize*6-offsetY,
 		gridSize*7,
@@ -35,6 +35,7 @@ var (
 	// main events
 	debug              bool = true
 	executing          bool = true
+	debugMenu		   bool
 
 	// game events
 	gameOver           bool

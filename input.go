@@ -41,4 +41,24 @@ func (c *C4) input() {
 		mouseButtonPressed = false
 	}
 
+	// Switch turns
+	if gameOngoing && (!gameOver || !gameDraw) && oponentSelected && boardRendered {
+		if mouseButtonPressed {
+			if c.turn == c.P1.ID {
+				c.turn = c.P2.ID
+			} else if c.turn == c.P2.ID {
+				c.turn = c.P1.ID
+			}
+		}
+	}
+
+	// Debug
+	if rl.IsKeyPressed(rl.KeyF3) {
+		if debugMenu {
+			debugMenu = false
+		} else if !debugMenu {
+			debugMenu = true
+		}
+	}
+
 }

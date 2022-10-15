@@ -1,10 +1,8 @@
 package main
 
 import (
-	// "fmt"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
-
 
 // * render is a funcion that starts every single menu and texture
 func (c *C4) render() {
@@ -17,7 +15,6 @@ func (c *C4) render() {
 	rl.DrawRectangleLines(offsetX, offsetY, width-(2*offsetX), HEIGHT-(2*offsetY), rl.LightGray)
 }
 
-
 // * draws the main menu
 func mainmenu() {
 	rl.DrawText("Welcome to Connect 4!", width*32/100, HEIGHT/12, 28, rl.LightGray)
@@ -25,23 +22,21 @@ func mainmenu() {
 	rl.DrawTexture(txrLogo, (width-278)/2, HEIGHT/14*3, rl.White)
 }
 
-
 // * Oponent selection screen
 func oponentSelect() {
-	// TODO Change Music when here			
+	// TODO Change Music when here
 	rl.DrawText("Do you wish to play with someone or against a bot?", width*10/100, HEIGHT/12, 28, rl.LightGray)
-	
+
 	rl.DrawText("PvP", (width/2)-(2*gridSize), HEIGHT/12*(40/35*8), 28, rl.LightGray)
 	rl.DrawText("AI", (width/2)+(2*gridSize), HEIGHT/12*(40/35*8), 28, rl.LightGray)
-	}	
-func blink(xPos int32) {	
+}
+func blink(xPos int32) {
 	rl.DrawRectangleLines(
-		xPos-(HEIGHT/100), 
-		blinkVer.yPos, 
-		blinkVer.xMag, 
+		xPos-(HEIGHT/100),
+		blinkVer.yPos,
+		blinkVer.xMag,
 		blinkVer.yMag, rl.LightGray)
 }
-
 
 func pvp() {
 	rl.DrawText("Game on, let the better human win!", width*10/100, HEIGHT/12, 28, rl.LightGray)
@@ -50,11 +45,10 @@ func pvai() {
 	rl.DrawText("Game on, I wish you the best...", width*10/100, HEIGHT/12, 28, rl.LightGray)
 }
 
-
 func board() {
 	// rectangle for the board
 	rl.DrawRectangle(
-		boardVer.xPos, 
+		boardVer.xPos,
 		boardVer.yPos,
 		boardVer.xMag,
 		boardVer.yMag, rl.DarkBlue)
@@ -62,15 +56,17 @@ func board() {
 		boardRendered = true
 	}
 }
-func grid(col, row int) {
+func grid(col, row int, color rl.Color) {
 	rl.DrawCircle(
 		int32(col*int(gridSize)+int(boardVer.xPos)+int(1.3*gridRadius)),
 		int32(row*int(gridSize)+int(boardVer.yPos)+int(1.3*gridRadius)),
-		gridRadius, rl.White)
+		gridRadius, color)
 }
 
+func (c *C4) floatingCell() {
+	rl.DrawCircle(rl.GetMouseX(), boardVer.yPos-gridSize/2, gridRadius, c.gamers[c.turn-1].CellColour)
+}
 
-// TODO remove, only for debug
 func centerHelper() {
 	rl.DrawLine(width/2, 0, width/2, HEIGHT, rl.Beige)
 	rl.DrawLine(0, HEIGHT/2, width, HEIGHT/2, rl.Beige)

@@ -16,7 +16,10 @@ func isEven(l int) bool {
 
 func (c *C4) logic() {
 	c.menuLogic()
-	centerHelper()
+
+	if debugMenu {
+		centerHelper()
+	}
 }
 
 
@@ -67,26 +70,45 @@ func (c *C4) boardLogic() {
 		for row := range c.board {
 			fmt.Println(c.board[row])
 		}
+
+		c.P1 = Gamer{ID: 1, CellColour: rl.Red}
+		if !isOponentAI {
+			c.P2 = Gamer{ID: 2, CellColour: rl.Yellow}
+			c.gamers = []Gamer{c.P1,c.P2}
+			c.turn = c.P1.ID
+		} else if isOponentAI {
+			c.AI = Gamer{ID: 3, CellColour: rl.Gold}
+			c.gamers = []Gamer{c.P1,c.AI}
+			c.turn = c.AI.ID
+		}
+
 		firstLoop = false
 	}
 
-	// render calls
+	// render stuff
 	if !isOponentAI {
 		pvp()
 	} else if isOponentAI {
 		pvai()
 	}
 	board()
-
+	
+	// test render a cell
+		// c.board[ROWS-1][2] = c.P2.ID
 
 	// render every cell
 	if gameOngoing && (!gameOver || !gameDraw) && oponentSelected && boardRendered {
 		for row := range c.board {
 			for col := range c.board[row] {
-				if c.board[row][col] == EMPTY {
-					grid(col, row)
+				cellState := c.board[row][col]
+				if cellState == EMPTY {
+					grid(col, row, rl.Black)
+				} else {
+					grid(col, row, c.gamers[cellState-1].CellColour)
 				}
 			}
 		}
+		
+		c.floatingCell()
 	}
 }
