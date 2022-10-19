@@ -26,6 +26,8 @@ var (
 		HEIGHT-gridSize*6-offsetY,
 		gridSize*7,
 		gridSize*6} 
+	boardXtra = HEIGHT*5/96
+	
 )
 
 var (
@@ -51,6 +53,7 @@ var (
 	firstLoop		   bool = true
 	runningTimeInt 	   int
 	runningTime		   float64
+	debPosY 		   int32
 )
 
 var (

@@ -44,6 +44,8 @@ func (c *C4) input() {
 	// Switch turns
 	if gameOngoing && (!gameOver || !gameDraw) && oponentSelected && boardRendered {
 		if mouseButtonPressed {
+			colCurrent := rl.GetMouseX() // ! FINISH, find a way to acording to the pos on x, round to the nearest col
+
 			if c.turn == c.P1.ID {
 				c.turn = c.P2.ID
 			} else if c.turn == c.P2.ID {

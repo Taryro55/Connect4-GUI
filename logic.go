@@ -19,6 +19,8 @@ func (c *C4) logic() {
 
 	if debugMenu {
 		centerHelper()
+		c.boardState()
+		c.printDebug()
 	}
 }
 
@@ -95,6 +97,8 @@ func (c *C4) boardLogic() {
 	
 	// test render a cell
 		// c.board[ROWS-1][2] = c.P2.ID
+
+	// ! The board starts at 400ish (boardXtra), increments on each cell by 96 (boardVer.xMag/7)
 
 	// render every cell
 	if gameOngoing && (!gameOver || !gameDraw) && oponentSelected && boardRendered {
