@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -66,7 +68,7 @@ func grid(col, row int, color rl.Color) {
 
 func (c *C4) floatingCell() {
 	// checks if the mouse its over the board.
-	if (boardVer.xPos+boardXtra < rl.GetMouseX() && rl.GetMouseX() < boardVer.xPos+boardVer.xMag-boardXtra) {
+	if boardVer.xPos+boardXtra < rl.GetMouseX() && rl.GetMouseX() < boardVer.xPos+boardVer.xMag-boardXtra {
 		rl.DrawCircle(rl.GetMouseX(), boardVer.yPos-gridSize/2, gridRadius, c.gamers[c.turn-1].CellColour)
 	}
 }
@@ -79,10 +81,11 @@ func centerHelper() {
 func (c *C4) boardState() {
 	debPosY = 0
 	if gameOngoing && (!gameOver || !gameDraw) && oponentSelected && boardRendered {
+		rl.DrawText(strconv.FormatInt(int64(collCurrent), 10), 200, 200, 20, rl.Beige)
 		for row := range c.board {
 			a := fmt.Sprint(c.board[row])
 			rl.DrawText(a, width-2*offsetX-HEIGHT*25/150, debPosY+offsetY+HEIGHT*5/384, 20, rl.Beige)
-			debPosY += HEIGHT/128*5
+			debPosY += HEIGHT / 128 * 5
 		}
 	}
 }

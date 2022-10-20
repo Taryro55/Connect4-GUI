@@ -3,8 +3,6 @@ package main
 import (
 	// "fmt"
 
-	// "fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -25,11 +23,17 @@ func (c *C4) update() {
 	}
 
 	// Selection of oponent
-	
 	if isEven(runningTimeInt) {
 		shouldBlink = true
 	} else if !isEven(runningTimeInt) {
 		shouldBlink = false
+	}
+
+	// Slice containing pixels of the 7 coll
+	for i, colls := 0, int(HEIGHT*355/768); i < 7; i, colls = i+1, colls+int(HEIGHT*95/768) {
+		if !contains(collsPos, colls) {
+			collsPos = append(collsPos, colls)
+		}
 	}
 
 	runningTime = rl.GetTime()
@@ -43,8 +47,6 @@ func init() {
 	rl.InitWindow(width, HEIGHT, WINDOW_TITLE)
 	rl.SetTargetFPS(60)
 	rl.SetMouseScale(1.0, 1.0)
-
-	
 
 	// textures
 	txrWhite = rl.LoadTexture(TXR_PATH + "/red.jpg")

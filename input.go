@@ -21,7 +21,7 @@ func (c *C4) input() {
 			isOponentAI = false
 		}
 	}
-	
+
 	// Fullscreen When Alt+Enter
 	if rl.IsKeyPressed(257) && (rl.IsKeyDown(342) || rl.IsKeyDown(346)) {
 		display := rl.GetCurrentMonitor()
@@ -37,30 +37,21 @@ func (c *C4) input() {
 	// Process events
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsMouseButtonPressed(rl.MouseRightButton) {
 		mouseButtonPressed = true
-	} else if !rl.IsMouseButtonPressed(rl.MouseLeftButton) || !rl.IsMouseButtonPressed(rl.MouseRightButton){
+	} else if !rl.IsMouseButtonPressed(rl.MouseLeftButton) || !rl.IsMouseButtonPressed(rl.MouseRightButton) {
 		mouseButtonPressed = false
 	}
 
-	// Switch turns
+	// Switch turns & gameplay
 	if gameOngoing && (!gameOver || !gameDraw) && oponentSelected && boardRendered {
 		if mouseButtonPressed {
-			colCurrent := rl.GetMouseX() // ! FINISH, find a way to acording to the pos on x, round to the nearest col
-
-			if c.turn == c.P1.ID {
-				c.turn = c.P2.ID
-			} else if c.turn == c.P2.ID {
-				c.turn = c.P1.ID
-			}
+			c.getSelectCol()
+			c.switchTurn()
 		}
 	}
 
 	// Debug
 	if rl.IsKeyPressed(rl.KeyF3) {
-		if debugMenu {
-			debugMenu = false
-		} else if !debugMenu {
-			debugMenu = true
-		}
+		c.debugToggle()
 	}
 
 }

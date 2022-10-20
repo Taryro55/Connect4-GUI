@@ -54,6 +54,8 @@ var (
 	runningTimeInt 	   int
 	runningTime		   float64
 	debPosY 		   int32
+	collsPos		   []int
+	collCurrent        int
 )
 
 var (
