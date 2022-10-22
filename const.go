@@ -10,7 +10,7 @@ const (
 	SFX_PATH	 = "sfx"
 
 	// Game config
-	HEIGHT       = int32(768)
+	HEIGHT       = int32(480 )
 	ROWS         = 6
 	COLLUMNS     = 7
 	WINDOW_TITLE = "Connect 4"

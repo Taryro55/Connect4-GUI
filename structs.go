@@ -29,3 +29,9 @@ type Vertice struct {
 	yMag int32
 }
 
+type Coords struct {
+	row int
+	col int
+	state int32
+}
+

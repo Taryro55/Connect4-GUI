@@ -41,8 +41,19 @@ func blink(xPos int32) {
 		blinkVer.yMag, rl.LightGray)
 }
 
-func pvp() {
-	rl.DrawText("Game on, let the better human win!", width*10/100, HEIGHT/12, 28, rl.LightGray)
+func (c *C4) pvp() {
+	if movesMade != 42 && winner == 0 {
+		rl.DrawText("Game on, let the better human win!", width*10/100, HEIGHT/12, 28, rl.LightGray)
+	} else if movesMade == 42 {
+		rl.DrawText("Press enter to reset board", width*10/100, HEIGHT/12, 28, rl.LightGray)
+	}
+	switch winner {
+	case c.P1.ID:
+		rl.DrawText("Red Won", width*10/100, HEIGHT/12, 28, rl.LightGray)
+	case c.P2.ID:
+		rl.DrawText("Yellow Won", width*10/100, HEIGHT/12, 28, rl.LightGray)
+
+	}
 }
 func pvai() {
 	rl.DrawText("Game on, I wish you the best...", width*10/100, HEIGHT/12, 28, rl.LightGray)
@@ -73,24 +84,19 @@ func (c *C4) floatingCell() {
 	}
 }
 
-func centerHelper() {
-	rl.DrawLine(width/2, 0, width/2, HEIGHT, rl.Beige)
-	rl.DrawLine(0, HEIGHT/2, width, HEIGHT/2, rl.Beige)
-}
-
-func (c *C4) boardState() {
+func (c *C4) boardDebug() {
 	debPosY = 0
 	if gameOngoing && (!gameOver || !gameDraw) && oponentSelected && boardRendered {
-		rl.DrawText(strconv.FormatInt(int64(collCurrent), 10), 200, 200, 20, rl.Beige)
+
+		rl.DrawLine(width/2, 0, width/2, HEIGHT, rl.Beige)
+		rl.DrawLine(0, HEIGHT/2, width, HEIGHT/2, rl.Beige)
+		rl.DrawText("Current Collumn: "+strconv.FormatInt(int64(collCurrent), 10), offsetX, offsetY, 20, rl.Beige)
+		rl.DrawText("Moves Made: "+strconv.FormatInt(int64(movesMade), 10), offsetX, 2*offsetY, 20, rl.Beige)
+
 		for row := range c.board {
 			a := fmt.Sprint(c.board[row])
 			rl.DrawText(a, width-2*offsetX-HEIGHT*25/150, debPosY+offsetY+HEIGHT*5/384, 20, rl.Beige)
 			debPosY += HEIGHT / 128 * 5
 		}
 	}
-}
-
-// General Printing checks
-func (c *C4) printDebug() {
-
 }

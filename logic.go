@@ -36,9 +36,7 @@ func (c *C4) logic() {
 	c.menuLogic()
 
 	if debugMenu {
-		centerHelper()
-		c.boardState()
-		c.printDebug()
+		c.boardDebug()
 	}
 }
 
@@ -75,6 +73,66 @@ func (c *C4) oponentLogic() {
 	}
 }
 
+func (c *C4) collFull() bool {
+	collCurrent = currentCol(collsPos, int(HEIGHT)*33/256)
+	if collHeight[collCurrent] < COLLUMNS-1 {
+		return false
+	} else if collHeight[collCurrent] >= COLLUMNS-1 {
+		return true
+	}
+	return true
+}
+
+func (c *C4) makeMove() {
+	if boardVer.xPos+boardXtra < rl.GetMouseX() && rl.GetMouseX() < boardVer.xPos+boardVer.xMag-boardXtra {
+		if !c.collFull() {
+			movesMade += 1
+			collHeight[collCurrent] += 1
+			c.board[ROWS-collHeight[collCurrent]][collCurrent] = c.turn
+			c.detect4()
+		}
+	}
+}
+
+func (c *C4) detectXY4(sli []int32, state int32) bool {
+	y = 0
+	for _, x := range sli {
+		if x == state {
+			y += 1
+			if y == 4 {
+				return true
+			}
+		} else if x != state {
+			y = 0
+		}
+	}
+	return false
+}
+
+func (c *C4) detect4() {
+
+	// This creates a 2d array based on colls to row, different from c.board that is from row to colls
+	for y := 0; y < 6; y++ {
+		tempSlice := []int32{}
+		for x := 0; x < 6; x++ {
+			tempSlice = append(tempSlice, c.board[x][y])
+		}
+		Colls2dSlice = append(Colls2dSlice, tempSlice)
+	}
+	for col := range Colls2dSlice {
+		if c.detectXY4(Colls2dSlice[col], c.P1.ID) {
+			winner = c.P1.ID
+		} else if c.detectXY4(Colls2dSlice[col], c.P2.ID) {
+			winner = c.P2.ID
+		}
+		gameOver = true
+
+
+	}
+
+	c.switchTurn()
+}
+
 func (c *C4) switchTurn() {
 	if c.turn == c.P1.ID {
 		c.turn = c.P2.ID
@@ -83,10 +141,20 @@ func (c *C4) switchTurn() {
 	}
 }
 
-func (c *C4) getSelectCol() {
-	if boardVer.xPos+boardXtra < rl.GetMouseX() && rl.GetMouseX() < boardVer.xPos+boardVer.xMag-boardXtra {
-		collCurrent = currentCol(collsPos, int(HEIGHT)*33/256)
+func (c *C4) endGame() {
+	for row := range c.board {
+		for col := range c.board[row] {
+			c.board[row][col] = EMPTY
+		}
 	}
+	movesMade = 0
+	collHeight = []int{0, 0, 0, 0, 0, 0, 0}
+}
+
+func (c *C4) backToMenu() {
+	gameOngoing = false
+	oponentSelected = false
+	boardRendered = false
 }
 
 // * board logic
@@ -118,16 +186,11 @@ func (c *C4) boardLogic() {
 
 	// render stuff
 	if !isOponentAI {
-		pvp()
+		c.pvp()
 	} else if isOponentAI {
 		pvai()
 	}
 	board()
-
-	// test render a cell
-	c.board[ROWS-1][2] = c.P2.ID
-
-	// ! The board starts at 400ish (boardXtra), increments on each cell by 96 (boardVer.xMag/7)
 
 	// render every cell
 	if gameOngoing && (!gameOver || !gameDraw) && oponentSelected && boardRendered {

@@ -22,6 +22,11 @@ func (c *C4) input() {
 		}
 	}
 
+	if rl.IsKeyPressed(rl.KeyBackspace) {
+		c.endGame()
+		c.backToMenu()
+	}
+
 	// Fullscreen When Alt+Enter
 	if rl.IsKeyPressed(257) && (rl.IsKeyDown(342) || rl.IsKeyDown(346)) {
 		display := rl.GetCurrentMonitor()
@@ -44,8 +49,7 @@ func (c *C4) input() {
 	// Switch turns & gameplay
 	if gameOngoing && (!gameOver || !gameDraw) && oponentSelected && boardRendered {
 		if mouseButtonPressed {
-			c.getSelectCol()
-			c.switchTurn()
+			c.makeMove()
 		}
 	}
 

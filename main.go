@@ -36,6 +36,13 @@ func (c *C4) update() {
 		}
 	}
 
+	// Checks to end game
+	if movesMade == 42 {
+		if rl.IsKeyDown(rl.KeyEnter) {
+			c.endGame()
+		}
+	}
+
 	runningTime = rl.GetTime()
 	runningTimeInt = int(runningTime)
 }
@@ -47,6 +54,8 @@ func init() {
 	rl.InitWindow(width, HEIGHT, WINDOW_TITLE)
 	rl.SetTargetFPS(60)
 	rl.SetMouseScale(1.0, 1.0)
+
+	collHeight = []int{0, 0, 0, 0, 0, 0, 0}
 
 	// textures
 	txrWhite = rl.LoadTexture(TXR_PATH + "/red.jpg")
