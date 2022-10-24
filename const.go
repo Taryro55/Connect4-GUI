@@ -1,6 +1,8 @@
 package main
 
-import ()
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 const (
 	// Paths
@@ -10,11 +12,14 @@ const (
 	SFX_PATH	 = "sfx"
 
 	// Game config
-	HEIGHT       = int32(480 )
+	HEIGHT       = int32(768)
 	ROWS         = 6
 	COLLUMNS     = 7
 	WINDOW_TITLE = "Connect 4"
 
 	// States
 	EMPTY = 0
+
+	// Keys
+	CONF_KEY = rl.KeyTab
 )

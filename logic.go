@@ -6,170 +6,95 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func isEven(l int) bool {
-	if l < 2 {
-		return l%2 == 0
-	}
-	return isEven(l - 2)
-}
-
-func contains(i []int, intg int) bool {
-	for _, v := range i {
-		if v == intg {
-			return true
-		}
-	}
-
-	return false
-}
-
-func currentCol(i []int, intg int) int {
-	for k, v := range i {
-		if int(rl.GetMouseX())-v < intg {
-			return k
-		}
-	}
-	return -1
-}
-
 func (c *C4) logic() {
-	c.menuLogic()
+	// General logic func calls
+	if screenMenu {
+		c.mainMenuLogic()
+	} else if !screenMenu && screenConf && !screenOponent {
+		c.configMenuLogic()
+	} else if !screenMenu && !screenConf && screenOponent {
+		c.oponentMenuLogic()
+	} else if !screenMenu && !screenConf && !screenOponent && screenBoard {
+		c.boardMenuLogic()
+	}
 
+	// Timer based on amount of loops
+	if mainLoops == 6 {
+		mainLoops = 0
+		runningMilisecsTimesTen += 1
+		runningMilisecs = float32(runningMilisecsTimesTen) / 10
+	}
+
+	// Activates debug if needed.
 	if debugMenu {
 		c.boardDebug()
 	}
+
 }
 
-// * main menu logic
-func (c *C4) menuLogic() {
-	if !gameOngoing {
+// * Menus Logic
+
+// main menu logic
+func (c *C4) mainMenuLogic() {
+	if screenMenu {
 		mainmenu()
-		if rl.IsKeyPressed(rl.KeyEnter) || mouseButtonPressed {
-			gameOngoing = true
+		if continuePressed {
+			screenMenu = false
+			screenOponent = true
+		} else if rl.IsKeyPressed(CONF_KEY) {
+			screenMenu = false
+			screenConf = true
 		}
-	} else if gameOngoing && !oponentSelected {
-		c.oponentLogic()
-	} else if gameOngoing && oponentSelected {
-		c.boardLogic()
 	}
 }
 
-// * select oponent menu logic
-func (c *C4) oponentLogic() {
-	if gameOngoing {
+func (c *C4) configMenuLogic() {
+	if screenConf {
+		confmenu()
+
+		if rl.IsKeyPressed(rl.KeyDown) && configHover != 2 {
+			configHover += 1
+		} else if rl.IsKeyPressed(rl.KeyUp) && configHover != 0 {
+			configHover -= 1
+		}
+
+		if rl.IsKeyPressed(CONF_KEY) {
+			c.backToMenu()
+		}
+	}
+}
+
+// oponent menu logic
+func (c *C4) oponentMenuLogic() {
+	if screenOponent { // if not on the screen menu
 		oponentSelect()
 		// Do a timer, when is a even sec blink, then hide.
 		if shouldBlink {
 			xPos := (width / 2) - (2 * gridSize)
-			if isOponentAI {
+			if oponentHover {
 				xPos += (4 * gridSize)
 			}
-			blink(xPos)
+			oponentBlink(xPos)
 		}
 
-		if rl.IsKeyPressed(rl.KeyEnter) || mouseButtonPressed {
-			oponentSelected = true
-		}
-	}
-}
-
-func (c *C4) collFull() bool {
-	collCurrent = currentCol(collsPos, int(HEIGHT)*33/256)
-	if collHeight[collCurrent] < COLLUMNS-1 {
-		return false
-	} else if collHeight[collCurrent] >= COLLUMNS-1 {
-		return true
-	}
-	return true
-}
-
-func (c *C4) makeMove() {
-	if boardVer.xPos+boardXtra < rl.GetMouseX() && rl.GetMouseX() < boardVer.xPos+boardVer.xMag-boardXtra {
-		if !c.collFull() {
-			movesMade += 1
-			collHeight[collCurrent] += 1
-			c.board[ROWS-collHeight[collCurrent]][collCurrent] = c.turn
-			c.detect4()
+		if continuePressed {
+			screenOponent = false
+			screenBoard = true
+			isOponentAI = oponentHover
 		}
 	}
 }
 
-func (c *C4) detectXY4(sli []int32, state int32) bool {
-	y = 0
-	for _, x := range sli {
-		if x == state {
-			y += 1
-			if y == 4 {
-				return true
-			}
-		} else if x != state {
-			y = 0
-		}
-	}
-	return false
-}
-
-func (c *C4) detect4() {
-
-	// This creates a 2d array based on colls to row, different from c.board that is from row to colls
-	for y := 0; y < 6; y++ {
-		tempSlice := []int32{}
-		for x := 0; x < 6; x++ {
-			tempSlice = append(tempSlice, c.board[x][y])
-		}
-		Colls2dSlice = append(Colls2dSlice, tempSlice)
-	}
-	for col := range Colls2dSlice {
-		if c.detectXY4(Colls2dSlice[col], c.P1.ID) {
-			winner = c.P1.ID
-		} else if c.detectXY4(Colls2dSlice[col], c.P2.ID) {
-			winner = c.P2.ID
-		}
-		gameOver = true
-
-
-	}
-
-	c.switchTurn()
-}
-
-func (c *C4) switchTurn() {
-	if c.turn == c.P1.ID {
-		c.turn = c.P2.ID
-	} else if c.turn == c.P2.ID {
-		c.turn = c.P1.ID
-	}
-}
-
-func (c *C4) endGame() {
-	for row := range c.board {
-		for col := range c.board[row] {
-			c.board[row][col] = EMPTY
-		}
-	}
-	movesMade = 0
-	collHeight = []int{0, 0, 0, 0, 0, 0, 0}
-}
-
-func (c *C4) backToMenu() {
-	gameOngoing = false
-	oponentSelected = false
-	boardRendered = false
-}
-
-// * board logic
-func (c *C4) boardLogic() {
-	if firstLoop {
+// create and render board logic
+func (c *C4) boardMenuLogic() {
+	if !boardMade {
 		// board
 		c.board = make([][]int32, ROWS)
 		for row := range c.board {
 			c.board[row] = make([]int32, COLLUMNS)
 		}
-		// Visualise board
-		for row := range c.board {
-			fmt.Println(c.board[row])
-		}
 
+		// Players
 		c.P1 = Gamer{ID: 1, CellColour: rl.Red}
 		if !isOponentAI {
 			c.P2 = Gamer{ID: 2, CellColour: rl.Yellow}
@@ -181,19 +106,20 @@ func (c *C4) boardLogic() {
 			c.turn = c.AI.ID
 		}
 
-		firstLoop = false
+		boardMade = true
 	}
 
-	// render stuff
-	if !isOponentAI {
-		c.pvp()
-	} else if isOponentAI {
-		pvai()
-	}
-	board()
+	// render board and every cell, including floating one
+	if screenBoard {
+		board()
 
-	// render every cell
-	if gameOngoing && (!gameOver || !gameDraw) && oponentSelected && boardRendered {
+		// render diff stuff acording to oponent
+		if !isOponentAI {
+			c.pvp()
+		} else if isOponentAI {
+			pvai()
+		}
+
 		for row := range c.board {
 			for col := range c.board[row] {
 				cellState := c.board[row][col]
@@ -204,15 +130,157 @@ func (c *C4) boardLogic() {
 				}
 			}
 		}
-
 		c.floatingCell()
 	}
 }
 
+// * General logic funcs
+
+// Checks if integer is even, returns true
+func isEven(l int) bool {
+	if l < 2 {
+		return l%2 == 0
+	}
+	return isEven(l - 2)
+}
+
+// Checks if a []int contains a int, returns true
+func contains(i []int, intg int) bool {
+	for _, v := range i {
+		if v == intg {
+			return true
+		}
+	}
+
+	return false
+}
+
+// * Gameplay general funcs
+
+// Gets the current collumn
+func currentCol(i []int, intg int) int {
+	for k, v := range i {
+		if int(rl.GetMouseX())-v < intg {
+			return k
+		}
+	}
+	return -1
+}
+
+// Checks if the collumn is full
+func (c *C4) collFull() bool {
+	collCurrent = currentCol(collsPos, int(HEIGHT)*33/256)
+	if collHeight[collCurrent] < COLLUMNS-1 {
+		return false
+	} else if collHeight[collCurrent] >= COLLUMNS-1 {
+		return true
+	}
+	return true
+}
+
+// Clears the board from every cell and state
+func (c *C4) resetBoard() {
+	for row := range c.board {
+		for col := range c.board[row] {
+			c.board[row][col] = EMPTY
+		}
+	}
+	movesMade = 0
+	collHeight = []int{0, 0, 0, 0, 0, 0, 0}
+}
+
+// Return to the main Menu
+func (c *C4) backToMenu() {
+	screenMenu = true
+	screenConf = false
+	screenOponent = false
+	screenBoard = false
+}
+
+// Handles debug menu
 func (c *C4) debugToggle() {
 	if debugMenu {
 		debugMenu = false
 	} else if !debugMenu {
 		debugMenu = true
 	}
+}
+
+// * Gameplay Logic
+
+// handles turn switching
+func (c *C4) switchTurn() {
+	if c.turn == c.P1.ID {
+		c.turn = c.P2.ID
+	} else if c.turn == c.P2.ID {
+		c.turn = c.P1.ID
+	}
+}
+
+func (c *C4) makeMove() {
+	if cursorOverBoard && !c.collFull() {
+		movesMade += 1
+		collHeight[collCurrent] += 1
+		c.board[ROWS-collHeight[collCurrent]][collCurrent] = c.turn
+		c.detect4()
+	}
+}
+
+// Detects if 4 have been connected on the X and Y axis
+func (c *C4) detectXY4(l []int32, s int32) bool {
+	y = 0
+	for _, x := range l {
+		if x == s {
+			y += 1
+			if y == 4 {
+				return true
+			}
+		} else if x != s {
+			y = 0
+		}
+	}
+	return false
+}
+
+func (c *C4) detectDiag(x []int, y []int) {
+	fmt.Println(x, "\n", y)
+}
+
+// Gives a 2D array of Y based board
+func (c *C4) multiDimSliceY() [][]int32 {
+	for y := 0; y < 6; y++ {
+		tempSlice := []int32{}
+		for x := 0; x < 6; x++ {
+			tempSlice = append(tempSlice, c.board[x][y])
+		}
+		twoDimY = append(twoDimY, tempSlice)
+	}
+	return twoDimY
+}
+
+func (c *C4) detect4() {
+
+	// Detects on Y
+	twoDimY := c.multiDimSliceY()
+	for col := range twoDimY {
+		if c.detectXY4(twoDimY[col], c.P1.ID) {
+			gameWinner = c.P1.ID
+		} else if c.detectXY4(twoDimY[col], c.P2.ID) {
+			gameWinner = c.P2.ID
+
+		}
+	}
+	// Detects on X
+	for row := range c.board {
+		if c.detectXY4(c.board[row], c.P1.ID) {
+			gameWinner = c.P1.ID
+		} else if c.detectXY4(c.board[row], c.P2.ID) {
+			gameWinner = c.P2.ID
+		}
+	}
+	// Detects Diag
+
+
+
+	c.switchTurn()
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"math"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -15,11 +14,14 @@ var (
 	offsetX = width * 2 / 100
 	offsetY = HEIGHT * 3 / 100
 
-	blinkVer = Vertice{
+	blinkOponentVer = Vertice{
 		0,
 		HEIGHT / 12 * (40 / 35 * 8),
 		(HEIGHT / 8),
 		(HEIGHT / 16)}
+	blinkConfVer = Vertice{
+		
+	}
 	boardVer = Vertice{ // vertice and magnitude on X & Y
 		(width / 2) - (gridSize*7)/2,
 		HEIGHT - gridSize*6 - offsetY,
@@ -38,28 +40,43 @@ var (
 	debugMenu bool
 
 	// game events
-	gameOver    bool
-	gameDraw    bool
-	gameOngoing bool
+	gameWinner 	int32
+
+	// screen events
+	screenMenu    bool = true
+	screenConf	  bool
+	screenOponent bool
+	screenBoard   bool
+
+	// input events
+	continuePressed bool
+
+	// Multi Dimensional Arrays
+	twoDimY	   [][]int32
+
+	// hover events
+	mainMenuHover	   int
+	configHover		   int
+	oponentHover	   bool
+
 
 	// general events
-	mouseButtonPressed bool
+	mainLoops		   int   // How many Main loops have happend
+	runningMilisecsTimesTen	   int // how many secs have elapsed
+	runningMilisecs	   float32
+	runningSecs 	   int
+
 	shouldBlink        bool
 	isOponentAI        bool
-	oponentSelected    bool
-	boardRendered      bool
-	firstLoop          bool = true
-	runningTimeInt     int
-	runningTime        float64
+	boardMade		   bool // checks if the 2D array was made.
+	cursorOverBoard    bool
 	debPosY            int32
 	collsPos           []int
 	collCurrent        int
 	collHeight         []int
 	movesMade          int
 
-	Colls2dSlice	   [][]int32
 	y =0
-	winner 			   int32
 )
 
 var (
@@ -69,6 +86,5 @@ var (
 	txrBoard      rl.Texture2D
 	txrBackground rl.Texture2D
 	txrLogo       rl.Texture2D
-	// mousePos    rl.Vector2
 	music rl.Music
 )

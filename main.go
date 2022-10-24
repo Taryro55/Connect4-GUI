@@ -1,8 +1,6 @@
 package main
 
 import (
-	// "fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -23,9 +21,9 @@ func (c *C4) update() {
 	}
 
 	// Selection of oponent
-	if isEven(runningTimeInt) {
+	if isEven(int(runningMilisecs/0.5)) {
 		shouldBlink = true
-	} else if !isEven(runningTimeInt) {
+	} else if !isEven(int(runningMilisecs/0.5)) {
 		shouldBlink = false
 	}
 
@@ -36,15 +34,17 @@ func (c *C4) update() {
 		}
 	}
 
-	// Checks to end game
+	// Checks to end game & for draws
 	if movesMade == 42 {
 		if rl.IsKeyDown(rl.KeyEnter) {
-			c.endGame()
+			c.resetBoard()
 		}
 	}
-
-	runningTime = rl.GetTime()
-	runningTimeInt = int(runningTime)
+	
+	// Checks if the mouse if above the rendered board
+	if boardVer.xPos+boardXtra < rl.GetMouseX() && rl.GetMouseX() < boardVer.xPos+boardVer.xMag-boardXtra {
+		cursorOverBoard = true
+	} else {cursorOverBoard = false}
 }
 
 // * starts basic stuff
@@ -92,13 +92,12 @@ func main() {
 	connect4 := C4{}
 	logger.Debug().Println("main() called.")
 	for executing {
-		// fmt.Println(mouseButtonPressed, gameOngoing)
-
 		logger.Debug().Println("in executing loop.")
 		connect4.input()
 		connect4.update()
 		connect4.render()
 		connect4.logic()
+		mainLoops += 1
 	}
 	quit()
 }

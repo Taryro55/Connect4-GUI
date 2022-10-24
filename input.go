@@ -14,16 +14,17 @@ func (c *C4) input() {
 	}
 
 	// Oponent select
-	if !oponentSelected {
-		if rl.IsKeyPressed(rl.KeyRight) && !isOponentAI {
-			isOponentAI = true
-		} else if rl.IsKeyPressed(rl.KeyLeft) && isOponentAI {
-			isOponentAI = false
+	if screenOponent {
+		if rl.IsKeyPressed(rl.KeyRight) && !oponentHover {
+			oponentHover = true
+		} else if rl.IsKeyPressed(rl.KeyLeft) && oponentHover {
+			oponentHover = false
 		}
 	}
 
+	// Back to menu
 	if rl.IsKeyPressed(rl.KeyBackspace) {
-		c.endGame()
+		c.resetBoard()
 		c.backToMenu()
 	}
 
@@ -40,17 +41,15 @@ func (c *C4) input() {
 	}
 
 	// Process events
-	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsMouseButtonPressed(rl.MouseRightButton) {
-		mouseButtonPressed = true
-	} else if !rl.IsMouseButtonPressed(rl.MouseLeftButton) || !rl.IsMouseButtonPressed(rl.MouseRightButton) {
-		mouseButtonPressed = false
+	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsMouseButtonPressed(rl.MouseRightButton) || rl.IsKeyPressed(rl.KeyEnter) {
+		continuePressed = true
+	} else if !rl.IsMouseButtonPressed(rl.MouseLeftButton) || !rl.IsMouseButtonPressed(rl.MouseRightButton) || !rl.IsKeyPressed(rl.KeyEnter) {
+		continuePressed = false
 	}
 
 	// Switch turns & gameplay
-	if gameOngoing && (!gameOver || !gameDraw) && oponentSelected && boardRendered {
-		if mouseButtonPressed {
-			c.makeMove()
-		}
+	if screenBoard && continuePressed {
+		c.makeMove()
 	}
 
 	// Debug
