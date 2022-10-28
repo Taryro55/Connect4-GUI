@@ -155,6 +155,15 @@ func contains(i []int, intg int) bool {
 	return false
 }
 
+func insert(a []int32, index int, value int32) []int32 {
+	if len(a) == index { // nil or empty slice or after last element
+		return append(a, value)
+	}
+	a = append(a[:index+1], a[index:]...) // index < len(a)
+	a[index] = value
+	return a
+}
+
 // * Gameplay general funcs
 
 // Gets the current collumn
@@ -195,6 +204,7 @@ func (c *C4) backToMenu() {
 	screenConf = false
 	screenOponent = false
 	screenBoard = false
+	gameWinner = 0
 }
 
 // Handles debug menu
@@ -242,8 +252,39 @@ func (c *C4) detectXY4(l []int32, s int32) bool {
 	return false
 }
 
-func (c *C4) detectDiag(x []int, y []int) {
-	fmt.Println(x, "\n", y)
+func (c *C4) createDiag2DArrays(s int32) (diagTopRight, diagTopLeft [][]int32) {
+	tempSlice1 := []int32{}
+	tempSlice2 := []int32{}
+
+
+	diag2D_TopToRight := [][]int32{}
+	diag2D_TopToLeft := [][]int32{}
+	for p := 0; p <= 12; p++ {
+		for iRow, _ := range c.board {
+			for iCol, cellState := range c.board[iRow] {
+				if cellState != 0 {
+					if oldP != p {
+						diag2D_TopToRight, diag2D_TopToLeft = append(diag2D_TopToRight, tempSlice1), append(diag2D_TopToLeft, tempSlice2)
+						tempSlice1, tempSlice2 = nil, nil
+					}
+					if iRow+iCol == p {
+						coord = c.board[iRow][iCol]
+						tempSlice1 = append(tempSlice1, coord)
+					}
+					if iRow-iCol+6 == p {
+						coord = c.board[iRow][iCol]
+						tempSlice2 = append(tempSlice2, coord)
+					}
+	
+					oldP = p
+				}
+			}
+		}
+	}
+	for w := range diag2D_TopToLeft {
+		fmt.Println(diag2D_TopToLeft[w])
+	}
+	return diag2D_TopToRight, diag2D_TopToLeft
 }
 
 // Gives a 2D array of Y based board
@@ -279,8 +320,22 @@ func (c *C4) detect4() {
 		}
 	}
 	// Detects Diag
+	diagTtR, diagTtL := c.createDiag2DArrays(c.P1.ID)
+	for row := range diagTtR {
+		if c.detectXY4(diagTtR[row], c.P1.ID) {
+			gameWinner = c.P1.ID
+		} else if c.detectXY4(diagTtR[row], c.P2.ID) {
+			gameWinner = c.P2.ID
+		}
+	}
 
-
+	for row := range diagTtL {
+		if c.detectXY4(diagTtL[row], c.P1.ID) {
+			gameWinner = c.P1.ID
+		} else if c.detectXY4(diagTtL[row], c.P2.ID) {
+			gameWinner = c.P2.ID
+		}
+	}
 
 	c.switchTurn()
 }

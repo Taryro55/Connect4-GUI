@@ -98,6 +98,9 @@ func main() {
 		connect4.render()
 		connect4.logic()
 		mainLoops += 1
+
+		// I just wanna say that dark chocolate is underrated - Lem 10/25/2022
+		// Overdose on dark chocolate - Lem 10/25/2022
 	}
 	quit()
 }

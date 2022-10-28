@@ -76,6 +76,8 @@ var (
 	collHeight         []int
 	movesMade          int
 
+	coord int32
+	oldP = 0
 	y =0
 )
 
