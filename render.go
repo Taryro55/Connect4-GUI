@@ -67,6 +67,8 @@ func (c *C4) pvpRender() {
 		rl.DrawText("Press enter to reset board", width*10/100, height/12, height*7/192, rl.LightGray)
 	}
 
+	fmt.Println(gameWinner)
+	
 	switch gameWinner {
 	case c.P1.ID:
 		rl.DrawText("Red Won", width*10/100, height/12, height*7/192, rl.LightGray)

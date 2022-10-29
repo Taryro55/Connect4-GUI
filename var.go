@@ -79,6 +79,7 @@ var (
 	coord int32
 	oldP  = 0
 	y     = 0
+	tempSlice = []int32{}
 )
 
 var (

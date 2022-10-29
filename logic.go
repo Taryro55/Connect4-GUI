@@ -134,15 +134,9 @@ func (c *C4) boardMenuLogic() {
 
 		// Players
 		c.P1 = Gamer{ID: 1, CellColour: rl.Red}
-		if !isOponentAI {
-			c.P2 = Gamer{ID: 2, CellColour: rl.Yellow}
-			c.gamers = []Gamer{c.P1, c.P2}
-			c.turn = c.P1.ID
-		} else if isOponentAI {
-			c.AI = Gamer{ID: 3, CellColour: rl.Gold}
-			c.gamers = []Gamer{c.P1, c.AI}
-			c.turn = c.AI.ID
-		}
+		c.P2 = Gamer{ID: 2, CellColour: rl.Yellow}
+		c.gamers = []Gamer{c.P1, c.P2}
+		c.turn = c.P1.ID
 
 		boardMade = true
 	}
@@ -154,8 +148,10 @@ func (c *C4) boardMenuLogic() {
 		// render diff stuff acording to oponent
 		if !isOponentAI {
 			c.pvpRender()
+			c.floatingCellRender()
 		} else if isOponentAI {
 			pvaiRender()
+			if c.turn != c.P2.ID {c.floatingCellRender()}
 		}
 
 		for row := range c.board {
@@ -168,7 +164,6 @@ func (c *C4) boardMenuLogic() {
 				}
 			}
 		}
-		c.floatingCellRender()
 	}
 }
 

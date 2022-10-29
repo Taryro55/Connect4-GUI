@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -49,8 +47,12 @@ func (c *C4) resetBoard() {
 			c.board[row][col] = EMPTY
 		}
 	}
+	c.turn = c.P1.ID
+	gameWinner = 0
 	movesMade = 0
 	collHeight = []int{0, 0, 0, 0, 0, 0, 0}
+	tempSlice = nil
+	twoDimY = nil
 }
 
 // Return to the main Menu
@@ -59,7 +61,7 @@ func (c *C4) backToMenu() {
 	screenConf = false
 	screenOponent = false
 	screenBoard = false
-	gameWinner = 0
+	c.resetBoard()
 }
 
 // Handles debug menu
@@ -134,16 +136,13 @@ func (c *C4) diag2DArrays() (diagTopRight, diagTopLeft [][]int32) {
 			}
 		}
 	}
-	for w := range diag2D_TopToLeft {
-		fmt.Println(diag2D_TopToLeft[w])
-	}
 	return diag2D_TopToRight, diag2D_TopToLeft
 }
 
 // Gives a 2D array of Y based board
 func (c *C4) multiDimSliceY() [][]int32 {
 	for y := 0; y < 6; y++ {
-		tempSlice := []int32{}
+		tempSlice = []int32{}
 		for x := 0; x < 6; x++ {
 			tempSlice = append(tempSlice, c.board[x][y])
 		}
@@ -155,7 +154,7 @@ func (c *C4) multiDimSliceY() [][]int32 {
 func (c *C4) detect4() {
 
 	// Detects on Y
-	twoDimY := c.multiDimSliceY()
+	twoDimY = c.multiDimSliceY()
 	for col := range twoDimY {
 		if c.detectXY4(twoDimY[col], c.P1.ID) {
 			gameWinner = c.P1.ID
@@ -164,6 +163,7 @@ func (c *C4) detect4() {
 
 		}
 	}
+
 	// Detects on X
 	for row := range c.board {
 		if c.detectXY4(c.board[row], c.P1.ID) {
