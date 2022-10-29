@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-
+	"os"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -27,7 +26,7 @@ func (c *C4) logic() {
 
 	// Activates debug if needed.
 	if debugMenu {
-		c.boardDebug()
+		c.boardDebugRender()
 	}
 
 }
@@ -37,29 +36,67 @@ func (c *C4) logic() {
 // main menu logic
 func (c *C4) mainMenuLogic() {
 	if screenMenu {
-		mainmenu()
+		mainMenuRender()
+		mainMenuInput()
+		if shouldBlink {
+			switch mainMenuHover {
+			case 0:
+				blinkRender(605, 595, 755, 645)
+			case 1:
+				blinkRender(615, 655, 750, 698)
+			case 2:
+				blinkRender(630, 696, 715, 735)
+			}
+
+		}
 		if continuePressed {
 			screenMenu = false
-			screenOponent = true
-		} else if rl.IsKeyPressed(CONF_KEY) {
-			screenMenu = false
-			screenConf = true
+			switch mainMenuHover {
+			case 0:
+				screenOponent = true
+			case 1:
+				screenConf = true
+			case 2:
+				os.Exit(0)
+			}
 		}
 	}
 }
 
 func (c *C4) configMenuLogic() {
 	if screenConf {
-		confmenu()
-
-		if rl.IsKeyPressed(rl.KeyDown) && configHover != 2 {
-			configHover += 1
-		} else if rl.IsKeyPressed(rl.KeyUp) && configHover != 0 {
-			configHover -= 1
+		confMenuRender()
+		configMenuInput()
+		if musicPaused {
+			rl.DrawCircle(580, 320, 20, rl.Red)
 		}
-
-		if rl.IsKeyPressed(CONF_KEY) {
-			c.backToMenu()
+		if soundPaused {
+			rl.DrawCircle(580, 370, 20, rl.Red)
+		}
+		if shouldBlink {
+			switch configMenuHover {
+			case 0:
+				blinkRender(605, 300, 724, 340)
+			case 1:
+				blinkRender(605, 350, 760, 390)
+			case 2:
+				blinkRender(605, 400, 830, 440)
+			case 3:
+				blinkRender(600, 690, 750, 740)
+			}
+		}
+		if continuePressed {
+			switch configMenuHover {
+			case 0:
+				musicPaused = !musicPaused
+			case 1:
+				soundPaused = !soundPaused
+			case 2:
+				fullScreen()
+			case 3:
+				screenConf = false
+				screenMenu = true
+			}
 		}
 	}
 }
@@ -67,20 +104,21 @@ func (c *C4) configMenuLogic() {
 // oponent menu logic
 func (c *C4) oponentMenuLogic() {
 	if screenOponent { // if not on the screen menu
-		oponentSelect()
+		oponentMenuRender()
+		oponentMenuInput()
 		// Do a timer, when is a even sec blink, then hide.
 		if shouldBlink {
 			xPos := (width / 2) - (2 * gridSize)
-			if oponentHover {
+			if oponentMenuHover {
 				xPos += (4 * gridSize)
 			}
-			oponentBlink(xPos)
+			oponentBlink(xPos) // TODO deprecated, replace with blinkRender()
 		}
 
 		if continuePressed {
 			screenOponent = false
 			screenBoard = true
-			isOponentAI = oponentHover
+			isOponentAI = oponentMenuHover
 		}
 	}
 }
@@ -111,26 +149,26 @@ func (c *C4) boardMenuLogic() {
 
 	// render board and every cell, including floating one
 	if screenBoard {
-		board()
+		boardRender()
 
 		// render diff stuff acording to oponent
 		if !isOponentAI {
-			c.pvp()
+			c.pvpRender()
 		} else if isOponentAI {
-			pvai()
+			pvaiRender()
 		}
 
 		for row := range c.board {
 			for col := range c.board[row] {
 				cellState := c.board[row][col]
 				if cellState == EMPTY {
-					grid(col, row, rl.Black)
+					gridRender(col, row, rl.Black)
 				} else {
-					grid(col, row, c.gamers[cellState-1].CellColour)
+					gridRender(col, row, c.gamers[cellState-1].CellColour)
 				}
 			}
 		}
-		c.floatingCell()
+		c.floatingCellRender()
 	}
 }
 
@@ -153,189 +191,4 @@ func contains(i []int, intg int) bool {
 	}
 
 	return false
-}
-
-func insert(a []int32, index int, value int32) []int32 {
-	if len(a) == index { // nil or empty slice or after last element
-		return append(a, value)
-	}
-	a = append(a[:index+1], a[index:]...) // index < len(a)
-	a[index] = value
-	return a
-}
-
-// * Gameplay general funcs
-
-// Gets the current collumn
-func currentCol(i []int, intg int) int {
-	for k, v := range i {
-		if int(rl.GetMouseX())-v < intg {
-			return k
-		}
-	}
-	return -1
-}
-
-// Checks if the collumn is full
-func (c *C4) collFull() bool {
-	collCurrent = currentCol(collsPos, int(HEIGHT)*33/256)
-	if collHeight[collCurrent] < COLLUMNS-1 {
-		return false
-	} else if collHeight[collCurrent] >= COLLUMNS-1 {
-		return true
-	}
-	return true
-}
-
-// Clears the board from every cell and state
-func (c *C4) resetBoard() {
-	for row := range c.board {
-		for col := range c.board[row] {
-			c.board[row][col] = EMPTY
-		}
-	}
-	movesMade = 0
-	collHeight = []int{0, 0, 0, 0, 0, 0, 0}
-}
-
-// Return to the main Menu
-func (c *C4) backToMenu() {
-	screenMenu = true
-	screenConf = false
-	screenOponent = false
-	screenBoard = false
-	gameWinner = 0
-}
-
-// Handles debug menu
-func (c *C4) debugToggle() {
-	if debugMenu {
-		debugMenu = false
-	} else if !debugMenu {
-		debugMenu = true
-	}
-}
-
-// * Gameplay Logic
-
-// handles turn switching
-func (c *C4) switchTurn() {
-	if c.turn == c.P1.ID {
-		c.turn = c.P2.ID
-	} else if c.turn == c.P2.ID {
-		c.turn = c.P1.ID
-	}
-}
-
-func (c *C4) makeMove() {
-	if cursorOverBoard && !c.collFull() {
-		movesMade += 1
-		collHeight[collCurrent] += 1
-		c.board[ROWS-collHeight[collCurrent]][collCurrent] = c.turn
-		c.detect4()
-	}
-}
-
-// Detects if 4 have been connected on the X and Y axis
-func (c *C4) detectXY4(l []int32, s int32) bool {
-	y = 0
-	for _, x := range l {
-		if x == s {
-			y += 1
-			if y == 4 {
-				return true
-			}
-		} else if x != s {
-			y = 0
-		}
-	}
-	return false
-}
-
-func (c *C4) createDiag2DArrays(s int32) (diagTopRight, diagTopLeft [][]int32) {
-	tempSlice1 := []int32{}
-	tempSlice2 := []int32{}
-
-
-	diag2D_TopToRight := [][]int32{}
-	diag2D_TopToLeft := [][]int32{}
-	for p := 0; p <= 12; p++ {
-		for iRow, _ := range c.board {
-			for iCol, cellState := range c.board[iRow] {
-				if cellState != 0 {
-					if oldP != p {
-						diag2D_TopToRight, diag2D_TopToLeft = append(diag2D_TopToRight, tempSlice1), append(diag2D_TopToLeft, tempSlice2)
-						tempSlice1, tempSlice2 = nil, nil
-					}
-					if iRow+iCol == p {
-						coord = c.board[iRow][iCol]
-						tempSlice1 = append(tempSlice1, coord)
-					}
-					if iRow-iCol+6 == p {
-						coord = c.board[iRow][iCol]
-						tempSlice2 = append(tempSlice2, coord)
-					}
-	
-					oldP = p
-				}
-			}
-		}
-	}
-	for w := range diag2D_TopToLeft {
-		fmt.Println(diag2D_TopToLeft[w])
-	}
-	return diag2D_TopToRight, diag2D_TopToLeft
-}
-
-// Gives a 2D array of Y based board
-func (c *C4) multiDimSliceY() [][]int32 {
-	for y := 0; y < 6; y++ {
-		tempSlice := []int32{}
-		for x := 0; x < 6; x++ {
-			tempSlice = append(tempSlice, c.board[x][y])
-		}
-		twoDimY = append(twoDimY, tempSlice)
-	}
-	return twoDimY
-}
-
-func (c *C4) detect4() {
-
-	// Detects on Y
-	twoDimY := c.multiDimSliceY()
-	for col := range twoDimY {
-		if c.detectXY4(twoDimY[col], c.P1.ID) {
-			gameWinner = c.P1.ID
-		} else if c.detectXY4(twoDimY[col], c.P2.ID) {
-			gameWinner = c.P2.ID
-
-		}
-	}
-	// Detects on X
-	for row := range c.board {
-		if c.detectXY4(c.board[row], c.P1.ID) {
-			gameWinner = c.P1.ID
-		} else if c.detectXY4(c.board[row], c.P2.ID) {
-			gameWinner = c.P2.ID
-		}
-	}
-	// Detects Diag
-	diagTtR, diagTtL := c.createDiag2DArrays(c.P1.ID)
-	for row := range diagTtR {
-		if c.detectXY4(diagTtR[row], c.P1.ID) {
-			gameWinner = c.P1.ID
-		} else if c.detectXY4(diagTtR[row], c.P2.ID) {
-			gameWinner = c.P2.ID
-		}
-	}
-
-	for row := range diagTtL {
-		if c.detectXY4(diagTtL[row], c.P1.ID) {
-			gameWinner = c.P1.ID
-		} else if c.detectXY4(diagTtL[row], c.P2.ID) {
-			gameWinner = c.P2.ID
-		}
-	}
-
-	c.switchTurn()
 }

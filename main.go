@@ -21,14 +21,14 @@ func (c *C4) update() {
 	}
 
 	// Selection of oponent
-	if isEven(int(runningMilisecs/0.5)) {
+	if isEven(int(runningMilisecs / 0.5)) {
 		shouldBlink = true
-	} else if !isEven(int(runningMilisecs/0.5)) {
+	} else if !isEven(int(runningMilisecs / 0.5)) {
 		shouldBlink = false
 	}
 
 	// Slice containing pixels of the 7 coll
-	for i, colls := 0, int(HEIGHT*355/768); i < 7; i, colls = i+1, colls+int(HEIGHT*95/768) {
+	for i, colls := 0, int(height*355/768); i < 7; i, colls = i+1, colls+int(height*95/768) {
 		if !contains(collsPos, colls) {
 			collsPos = append(collsPos, colls)
 		}
@@ -40,18 +40,20 @@ func (c *C4) update() {
 			c.resetBoard()
 		}
 	}
-	
+
 	// Checks if the mouse if above the rendered board
 	if boardVer.xPos+boardXtra < rl.GetMouseX() && rl.GetMouseX() < boardVer.xPos+boardVer.xMag-boardXtra {
 		cursorOverBoard = true
-	} else {cursorOverBoard = false}
+	} else {
+		cursorOverBoard = false
+	}
 }
 
 // * starts basic stuff
 func init() {
 	logger.Debug().Println("init() executed.")
 
-	rl.InitWindow(width, HEIGHT, WINDOW_TITLE)
+	rl.InitWindow(width, height, WINDOW_TITLE)
 	rl.SetTargetFPS(60)
 	rl.SetMouseScale(1.0, 1.0)
 

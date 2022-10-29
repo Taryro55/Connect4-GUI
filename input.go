@@ -13,15 +13,6 @@ func (c *C4) input() {
 		musicPaused = !musicPaused
 	}
 
-	// Oponent select
-	if screenOponent {
-		if rl.IsKeyPressed(rl.KeyRight) && !oponentHover {
-			oponentHover = true
-		} else if rl.IsKeyPressed(rl.KeyLeft) && oponentHover {
-			oponentHover = false
-		}
-	}
-
 	// Back to menu
 	if rl.IsKeyPressed(rl.KeyBackspace) {
 		c.resetBoard()
@@ -30,14 +21,7 @@ func (c *C4) input() {
 
 	// Fullscreen When Alt+Enter
 	if rl.IsKeyPressed(257) && (rl.IsKeyDown(342) || rl.IsKeyDown(346)) {
-		display := rl.GetCurrentMonitor()
-
-		if rl.IsWindowFullscreen() {
-			rl.SetWindowSize(rl.GetMonitorWidth(display), rl.GetMonitorHeight(display))
-		} else {
-			rl.SetWindowSize(int(width), int(HEIGHT))
-		}
-		rl.ToggleFullscreen()
+		fullScreen()
 	}
 
 	// Process events
@@ -56,5 +40,28 @@ func (c *C4) input() {
 	if rl.IsKeyPressed(rl.KeyF3) {
 		c.debugToggle()
 	}
+}
 
+func mainMenuInput() {
+	if rl.IsKeyPressed(rl.KeyDown) && mainMenuHover <= 1 {
+		mainMenuHover++
+	} else if rl.IsKeyPressed(rl.KeyUp) && mainMenuHover >= 0 {
+		mainMenuHover--
+	}
+}
+
+func configMenuInput() {
+	if rl.IsKeyPressed(rl.KeyDown) && configMenuHover <= 2 {
+		configMenuHover++
+	} else if rl.IsKeyPressed(rl.KeyUp) && configMenuHover >= 0 {
+		configMenuHover--
+	}
+}
+
+func oponentMenuInput() {
+	if rl.IsKeyPressed(rl.KeyRight) && !oponentMenuHover {
+		oponentMenuHover = true
+	} else if rl.IsKeyPressed(rl.KeyLeft) && oponentMenuHover {
+		oponentMenuHover = false
+	}
 }

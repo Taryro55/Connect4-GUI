@@ -2,37 +2,38 @@ package main
 
 import (
 	"math"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 var (
-	width = (HEIGHT / 9) * 16
+	height = HEIGHT
 
-	gridSize   = int32(math.Round((math.Hypot(float64(width), float64(HEIGHT)))*0.1) * 0.6)
+	width = (height / 9) * 16
+
+	gridSize   = int32(math.Round((math.Hypot(float64(width), float64(height)))*0.1) * 0.6)
 	gridRadius = float32(gridSize * 5 / 13)
 
 	offsetX = width * 2 / 100
-	offsetY = HEIGHT * 3 / 100
+	offsetY = height * 3 / 100
 
 	blinkOponentVer = Vertice{
 		0,
-		HEIGHT / 12 * (40 / 35 * 8),
-		(HEIGHT / 8),
-		(HEIGHT / 16)}
-	blinkConfVer = Vertice{
-		
-	}
-	boardVer = Vertice{ // vertice and magnitude on X & Y
+		height / 12 * (40 / 35 * 8),
+		(height / 8),
+		(height / 16)}
+	boardVer     = Vertice{ // vertice and magnitude on X & Y
 		(width / 2) - (gridSize*7)/2,
-		HEIGHT - gridSize*6 - offsetY,
+		height - gridSize*6 - offsetY,
 		gridSize * 7,
 		gridSize * 6}
-	boardXtra = HEIGHT * 5 / 96
+	boardXtra = height * 5 / 96
 )
 
 var (
 	// options
 	musicPaused bool
+	soundPaused bool
 
 	// main events
 	debug     bool = true
@@ -40,11 +41,11 @@ var (
 	debugMenu bool
 
 	// game events
-	gameWinner 	int32
+	gameWinner int32
 
 	// screen events
 	screenMenu    bool = true
-	screenConf	  bool
+	screenConf    bool
 	screenOponent bool
 	screenBoard   bool
 
@@ -52,33 +53,32 @@ var (
 	continuePressed bool
 
 	// Multi Dimensional Arrays
-	twoDimY	   [][]int32
+	twoDimY [][]int32
 
 	// hover events
-	mainMenuHover	   int
-	configHover		   int
-	oponentHover	   bool
-
+	mainMenuHover    int
+	configMenuHover  int
+	oponentMenuHover bool
 
 	// general events
-	mainLoops		   int   // How many Main loops have happend
-	runningMilisecsTimesTen	   int // how many secs have elapsed
-	runningMilisecs	   float32
-	runningSecs 	   int
+	mainLoops               int // How many Main loops have happend
+	runningMilisecsTimesTen int // how many secs have elapsed
+	runningMilisecs         float32
+	// runningSecs             int
 
-	shouldBlink        bool
-	isOponentAI        bool
-	boardMade		   bool // checks if the 2D array was made.
-	cursorOverBoard    bool
-	debPosY            int32
-	collsPos           []int
-	collCurrent        int
-	collHeight         []int
-	movesMade          int
+	shouldBlink     bool
+	isOponentAI     bool
+	boardMade       bool // checks if the 2D array was made.
+	cursorOverBoard bool
+	debPosY         int32
+	collsPos        []int
+	collCurrent     int
+	collHeight      []int
+	movesMade       int
 
 	coord int32
-	oldP = 0
-	y =0
+	oldP  = 0
+	y     = 0
 )
 
 var (
@@ -88,5 +88,5 @@ var (
 	txrBoard      rl.Texture2D
 	txrBackground rl.Texture2D
 	txrLogo       rl.Texture2D
-	music rl.Music
+	music         rl.Music
 )

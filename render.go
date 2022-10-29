@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -14,69 +15,70 @@ func (c *C4) render() {
 	defer rl.EndDrawing()
 
 	rl.ClearBackground(rl.Black)
-	rl.DrawRectangleLines(offsetX, offsetY, width-(2*offsetX), HEIGHT-(2*offsetY), rl.LightGray)
+	rl.DrawRectangleLines(offsetX, offsetY, width-(2*offsetX), height-(2*offsetY), rl.LightGray)
 }
 
 // * draws the main menu
-func mainmenu() {
-	rl.DrawText("Connect 4!", width/2-HEIGHT*162/768, HEIGHT/12, HEIGHT*5/64, rl.LightGray)
-	rl.DrawText("Start!", width/2-HEIGHT*35/384, HEIGHT-HEIGHT/4+HEIGHT/32, HEIGHT/16, rl.LightGray)
-	rl.DrawText("Config", width/2-HEIGHT*5/64, HEIGHT-HEIGHT/4+2*HEIGHT*5/96, HEIGHT*5/96, rl.LightGray)
-	rl.DrawText("Quit", width/2-HEIGHT*15/256, HEIGHT-HEIGHT/4+(7/2)*HEIGHT*5/96, HEIGHT*5/96, rl.LightGray)
+func mainMenuRender() {
+	rl.DrawText("Connect 4!", width/2-height*162/768, height/12, height*5/64, rl.LightGray)
+	rl.DrawText("Start!", width/2-height*35/384, height-height/4+height/32, height/16, rl.LightGray)
+	rl.DrawText("Config", width/2-height*5/64, height-height/4+2*height*5/96, height*5/96, rl.LightGray)
+	rl.DrawText("Quit", width/2-height*15/256, height-height/4+(7/2)*height*5/96, height*5/96, rl.LightGray)
 
-
-	rl.DrawTexture(txrLogo, (width-278)/2, HEIGHT/14*3, rl.White)
+	rl.DrawTexture(txrLogo, (width-278)/2, height/14*3, rl.White)
 }
 
-func confmenu() {
-	rl.DrawText("Config", width/2-HEIGHT*110/768, HEIGHT/12, HEIGHT*5/64, rl.LightGray)
-	rl.DrawText("Music", width/2-HEIGHT*35/384, HEIGHT-HEIGHT/4+HEIGHT/32, HEIGHT*5/96, rl.LightGray)
-	rl.DrawText("Sound Effects", width/2-HEIGHT*25/128, HEIGHT-HEIGHT/4+2*HEIGHT*5/96, HEIGHT*5/96, rl.LightGray)
-	rl.DrawText("Fullscreen", width/2-HEIGHT*25/128, HEIGHT-HEIGHT/4+(7/2)*HEIGHT*5/96, HEIGHT*5/96, rl.LightGray)
+func confMenuRender() {
+	rl.DrawText("Config", width/2-height*110/768, height/12, height*5/64, rl.LightGray)
+	rl.DrawText("Music", width/2-height*35/384, height*25/64, height*5/96, rl.LightGray)
+	rl.DrawText("Sounds", width/2-height*35/384, height*175/384, height*5/96, rl.LightGray)
+	rl.DrawText("Fullscreen", width/2-height*35/384, height*25/48, height*5/96, rl.LightGray)
+	rl.DrawText("Return", width/2-height*75/768, height-height/4+(7/2)*height*5/96, height*5/96, rl.LightGray)
+	// add a back to menu
 
 }
 
-func confBlink() {
-	// rl.DrawRectangleLines(
-
-	// )
+func blinkRender(xPos, yPos, xMag, yMag int32) {
+	xMag, yMag = xMag-xPos, yMag-yPos
+	rl.DrawRectangleLines(
+		xPos, yPos, xMag, yMag, rl.White)
 }
 
 // * Oponent selection screen
-func oponentSelect() {
+func oponentMenuRender() {
 	// TODO Change Music when here
-	rl.DrawText("Do you wish to play with someone or against a bot?", width*10/100, HEIGHT/12, 28, rl.LightGray)
+	rl.DrawText("Do you wish to play with someone or against a bot?", width*10/100, height/12, height*5/96, rl.LightGray)
 
-	rl.DrawText("PvP", (width/2)-(2*gridSize), HEIGHT/12*(40/35*8), 28, rl.LightGray)
-	rl.DrawText("AI", (width/2)+(2*gridSize), HEIGHT/12*(40/35*8), 28, rl.LightGray)
+	rl.DrawText("PvP", (width/2)-(2*gridSize), height/12*(40/35*8), height*7/128, rl.LightGray)
+	rl.DrawText("AI", (width/2)+(2*gridSize), height/12*(40/35*8), height*7/128, rl.LightGray)
 }
 func oponentBlink(xPos int32) {
 	rl.DrawRectangleLines(
-		xPos-(HEIGHT/100),
+		xPos-(height/100),
 		blinkOponentVer.yPos,
 		blinkOponentVer.xMag,
 		blinkOponentVer.yMag, rl.LightGray)
 }
 
-func (c *C4) pvp() {
+func (c *C4) pvpRender() {
 	if movesMade != 42 && gameWinner == 0 {
-		rl.DrawText("Game on, let the better human win!", width*10/100, HEIGHT/12, 28, rl.LightGray)
+		rl.DrawText("Game on, let the better human win!", width*10/100, height/12, height*7/192, rl.LightGray)
 	} else if movesMade == 42 {
-		rl.DrawText("Press enter to reset board", width*10/100, HEIGHT/12, 28, rl.LightGray)
+		rl.DrawText("Press enter to reset board", width*10/100, height/12, height*7/192, rl.LightGray)
 	}
+
 	switch gameWinner {
 	case c.P1.ID:
-		rl.DrawText("Red Won", width*10/100, HEIGHT/12, 28, rl.LightGray)
+		rl.DrawText("Red Won", width*10/100, height/12, height*7/192, rl.LightGray)
 	case c.P2.ID:
-		rl.DrawText("Yellow Won", width*10/100, HEIGHT/12, 28, rl.LightGray)
-
+		rl.DrawText("Yellow Won", width*10/100, height/12, height*7/192, rl.LightGray)
 	}
 }
-func pvai() {
-	rl.DrawText("Game on, I wish you the best...", width*10/100, HEIGHT/12, 28, rl.LightGray)
+func pvaiRender() {
+	rl.DrawText("Game on, I wish you the best...", width*10/100, height/12, height*7/192, rl.LightGray)
 }
 
-func board() {
+func boardRender() {
 	// rectangle for the board
 	rl.DrawRectangle(
 		boardVer.xPos,
@@ -84,35 +86,35 @@ func board() {
 		boardVer.xMag,
 		boardVer.yMag, rl.DarkBlue)
 }
-func grid(col, row int, color rl.Color) {
+func gridRender(col, row int, color rl.Color) {
 	rl.DrawCircle(
 		int32(col*int(gridSize)+int(boardVer.xPos)+int(1.3*gridRadius)),
 		int32(row*int(gridSize)+int(boardVer.yPos)+int(1.3*gridRadius)),
 		gridRadius, color)
 }
 
-func (c *C4) floatingCell() {
+func (c *C4) floatingCellRender() {
 	// checks if the mouse its over the board.
 	if cursorOverBoard {
 		rl.DrawCircle(rl.GetMouseX(), boardVer.yPos-gridSize/2, gridRadius, c.gamers[c.turn-1].CellColour)
 	}
 }
 
-func (c *C4) boardDebug() {
+func (c *C4) boardDebugRender() {
 	debPosY = 0
 
-	fmt.Println(rl.GetMouseX())
+	fmt.Println(rl.GetMouseX(), rl.GetMouseY())
 
-	rl.DrawLine(width/2, 0, width/2, HEIGHT, rl.Beige)
-	rl.DrawLine(0, HEIGHT/2, width, HEIGHT/2, rl.Beige)
+	rl.DrawLine(width/2, 0, width/2, height, rl.Beige)
+	rl.DrawLine(0, height/2, width, height/2, rl.Beige)
 	if screenBoard {
-		rl.DrawText("Current Collumn: "+strconv.FormatInt(int64(collCurrent), 10), offsetX, offsetY, 20, rl.Beige)
-		rl.DrawText("Moves Made: "+strconv.FormatInt(int64(movesMade), 10), offsetX, 2*offsetY, 20, rl.Beige)
+		rl.DrawText("Current Collumn: "+strconv.FormatInt(int64(collCurrent), 10), offsetX, offsetY, height*5/192, rl.Beige)
+		rl.DrawText("Moves Made: "+strconv.FormatInt(int64(movesMade), 10), offsetX, 2*offsetY, height*5/192, rl.Beige)
 
 		for row := range c.board {
 			a := fmt.Sprint(c.board[row])
-			rl.DrawText(a, width-2*offsetX-HEIGHT*25/150, debPosY+offsetY+HEIGHT*5/384, 20, rl.Beige)
-			debPosY += HEIGHT / 128 * 5
+			rl.DrawText(a, width-2*offsetX-height*25/150, debPosY+offsetY+height*5/384, height*5/192, rl.Beige)
+			debPosY += height / 128 * 5
 		}
 	}
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 const (
@@ -21,5 +20,4 @@ const (
 	EMPTY = 0
 
 	// Keys
-	CONF_KEY = rl.KeyTab
 )
