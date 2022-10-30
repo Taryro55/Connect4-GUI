@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
 )
@@ -12,9 +11,13 @@ func (c *C4) aiMove() {
 	s := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(s)
 	col := r.Intn(COLLUMNS)
-	
-	if (0 <= col && col <= 6) { // and check if col is ful
-		fmt.Println(r.Intn(col))
+	row := 5 - collHeight[col]
+
+	if row != -1 { // check if col is ful
+		movesMade += 1
+		collHeight[col] += 1
+		c.board[row][col] = c.P2.ID
+		c.detect4()
 	}
 
 	// movesMade += 1

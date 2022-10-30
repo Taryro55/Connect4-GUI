@@ -147,10 +147,10 @@ func (c *C4) boardMenuLogic() {
 
 		// render diff stuff acording to oponent
 		if !isOponentAI {
-			c.pvpRender()
+			c.pvpRender("Game on! Humans compete!", "P1 Won!", "P2 Won!")
 			c.floatingCellRender()
 		} else if isOponentAI {
-			pvaiRender()
+			c.pvpRender("Game on! Machine v/s Human!", "You won!", "Bot wins")
 			if c.turn != c.P2.ID {c.floatingCellRender()}
 		}
 

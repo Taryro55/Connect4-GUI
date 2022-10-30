@@ -60,24 +60,21 @@ func oponentBlink(xPos int32) {
 		blinkOponentVer.yMag, rl.LightGray)
 }
 
-func (c *C4) pvpRender() {
-	if movesMade != 42 && gameWinner == 0 {
-		rl.DrawText("Game on, let the better human win!", width*10/100, height/12, height*7/192, rl.LightGray)
+func (c *C4) pvpRender(startText, p1WinText, p2WinText string) {
+	if movesMade != 42 {
+		switch gameWinner {
+		case 0:
+			rl.DrawText(startText, width*10/100, height/12, height*7/192, rl.LightGray)
+		case c.P1.ID:
+			rl.DrawText(p1WinText, width*10/100, height/12, height*7/192, rl.LightGray)
+		case c.P2.ID:
+			rl.DrawText(p2WinText, width*10/100, height/12, height*7/192, rl.LightGray)
+		}
 	} else if movesMade == 42 {
 		rl.DrawText("Press enter to reset board", width*10/100, height/12, height*7/192, rl.LightGray)
 	}
 
-	fmt.Println(gameWinner)
 	
-	switch gameWinner {
-	case c.P1.ID:
-		rl.DrawText("Red Won", width*10/100, height/12, height*7/192, rl.LightGray)
-	case c.P2.ID:
-		rl.DrawText("Yellow Won", width*10/100, height/12, height*7/192, rl.LightGray)
-	}
-}
-func pvaiRender() {
-	rl.DrawText("Game on, I wish you the best...", width*10/100, height/12, height*7/192, rl.LightGray)
 }
 
 func boardRender() {

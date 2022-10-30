@@ -32,13 +32,13 @@ func (c *C4) input() {
 	}
 
 	// Switch turns & gameplay
-	if screenBoard && continuePressed {
-		if !isOponentAI {
+	if screenBoard && boardMade {
+		if !isOponentAI && continuePressed {
 			c.makeMove()
 		} else if isOponentAI {
 			if c.turn == c.P2.ID {
 				c.aiMove()
-			} else if c.turn == c.P1.ID {
+			} else if c.turn == c.P1.ID && continuePressed {
 				c.makeMove()
 			}
 		}
