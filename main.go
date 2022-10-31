@@ -21,9 +21,9 @@ func (c *C4) update() {
 	}
 
 	// Selection of oponent
-	if isEven(int(runningMilisecs / 0.5)) {
+	if isEven(int(runningMilisecs * 2)) {
 		shouldBlink = true
-	} else if !isEven(int(runningMilisecs / 0.5)) {
+	} else if !isEven(int(runningMilisecs * 2)) {
 		shouldBlink = false
 	}
 
@@ -31,13 +31,6 @@ func (c *C4) update() {
 	for i, colls := 0, int(height*355/768); i < 7; i, colls = i+1, colls+int(height*95/768) {
 		if !contains(collsPos, int32(colls)) {
 			collsPos = append(collsPos, int32(colls))
-		}
-	}
-
-	// Checks to end game & for draws
-	if movesMade == 42 {
-		if rl.IsKeyDown(rl.KeyEnter) {
-			c.resetBoard()
 		}
 	}
 

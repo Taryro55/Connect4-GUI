@@ -186,7 +186,7 @@ func fullScreen() {
 
 // Clears the board from every cell and state
 func (c *C4) resetBoard() {
-	_ = boardReset(c.board)
+	boardReset(c.board)
 	c.turn = c.P1.ID
 	gameWinner = 0
 	movesMade = 0

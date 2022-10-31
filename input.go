@@ -31,14 +31,21 @@ func (c *C4) input() {
 		continuePressed = false
 	}
 
+	// Checks to end game & for draws
+	if movesMade == 42 || gameWinner != 0{
+		if rl.IsKeyDown(rl.KeyEnter) {
+			c.resetBoard()
+		}
+	}
+
 	// Switch turns & gameplay
-	if screenBoard && boardMade {
-		if !isOponentAI && continuePressed {
+	if screenBoard && boardMade && gameWinner == 0 {
+		if !isOponentAI && rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 			c.makeMove()
 		} else if isOponentAI {
 			if c.turn == c.P2.ID {
 				c.aiMove()
-			} else if c.turn == c.P1.ID && continuePressed {
+			} else if c.turn == c.P1.ID && rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 				c.makeMove()
 			}
 		}

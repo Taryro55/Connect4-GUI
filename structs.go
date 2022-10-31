@@ -34,6 +34,4 @@ type Board struct {
 	heights []int32
 	colls int32
 	rows int32
-	
-	moves int32
 }

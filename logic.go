@@ -1,5 +1,11 @@
 package main
 
+import (
+	"fmt"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
+
 // * Checker Funcs //
 
 func isColValid(c int32, board Board) bool { // Checks if a collumn is ful
@@ -16,16 +22,17 @@ func isWinDetected(l []int32) int32 {
 	y := 0
 	x0 := int32(0)
 	for _, x := range l {
-		if (x == 1 || x == 2) && (x == x0 || x0 == 0) {
-			x0 = x
-			y += 1
-			if y == 4 {
-				return x
-			}
-		} else if x != x0 {
+		if x != x0 {
 			y = 0
 			x0 = 0
 		}
+		if (x == 1 || x == 2) && (x == x0 || x0 == 0) {
+			x0 = x
+			y++
+			if y == 4 {
+				return x
+			}
+		} 
 	}
 	return EMPTY
 }
@@ -118,6 +125,7 @@ func getConnectedFours(board Board) int32 {
 
 	// Detects on X
 	for row := range board.grid {
+		fmt.Println(board.grid[row])
 		if isWinDetected(board.grid[row]) != EMPTY {
 			return isWinDetected(board.grid[row])
 		}
@@ -158,13 +166,12 @@ func boardMake(r, c int32) Board {
 }
 
 // Resets all values of a board
-func boardReset(board Board) bool {
+func boardReset(board Board) {
 	for row := range board.grid {
 		for col := range board.grid[row] {
 			board.grid[row][col] = EMPTY
 		}
 	}
-	return true
 }
 
 // Changes the state of one of the points on the grid
@@ -174,3 +181,52 @@ func boardDropPiece(b Board, col, state int32) bool {
 }
 
 // * End of Board Funcs //
+
+// * General //
+
+// Checks if integer is even, returns true
+func isEven(l int) bool {
+	if l < 2 {
+		return l%2 == 0
+	}
+	return isEven(l - 2)
+}
+
+// Checks if a []int contains a int, returns true
+func contains(i []int32, intg int32) bool {
+	for _, v := range i {
+		if v == intg {
+			return true
+		}
+	}
+
+	return false
+}
+
+// * End of General //
+
+// * Misc Logic //
+
+// handles turn switching
+func (c *C4) switchTurn() {
+	getWinner(c.board)
+	if gameWinner == 0 {
+		if c.turn == c.P1.ID {
+			c.turn = c.P2.ID
+		} else if c.turn == c.P2.ID {
+			c.turn = c.P1.ID
+		}
+	}
+}
+
+func (c *C4) makeMove() {
+	collCurrent = getHoveringCol(collsPos, height*33/256, rl.GetMouseX())
+	if cursorOverBoard && isColValid(collCurrent, c.board) {
+		movesMade += 1
+		c.board.heights[collCurrent] += 1
+		c.board.grid[ROWS-c.board.heights[collCurrent]][collCurrent] = c.turn
+		c.switchTurn()
+	}
+}
+
+// * End of Misc Logic //
