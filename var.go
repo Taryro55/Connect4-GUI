@@ -71,8 +71,8 @@ var (
 	boardMade       bool // checks if the 2D array was made.
 	cursorOverBoard bool
 	debPosY         int32
-	collsPos        []int
-	collCurrent     int
+	collsPos        []int32
+	collCurrent     int32
 	collHeight      []int
 	movesMade       int
 

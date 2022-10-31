@@ -29,8 +29,8 @@ func (c *C4) update() {
 
 	// Slice containing pixels of the 7 coll
 	for i, colls := 0, int(height*355/768); i < 7; i, colls = i+1, colls+int(height*95/768) {
-		if !contains(collsPos, colls) {
-			collsPos = append(collsPos, colls)
+		if !contains(collsPos, int32(colls)) {
+			collsPos = append(collsPos, int32(colls))
 		}
 	}
 
@@ -56,8 +56,6 @@ func init() {
 	rl.InitWindow(width, height, WINDOW_TITLE)
 	rl.SetTargetFPS(60)
 	rl.SetMouseScale(1.0, 1.0)
-
-	collHeight = []int{0, 0, 0, 0, 0, 0, 0}
 
 	// textures
 	txrWhite = rl.LoadTexture(TXR_PATH + "/red.jpg")

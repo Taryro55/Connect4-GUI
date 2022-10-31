@@ -73,8 +73,6 @@ func (c *C4) pvpRender(startText, p1WinText, p2WinText string) {
 	} else if movesMade == 42 {
 		rl.DrawText("Press enter to reset board", width*10/100, height/12, height*7/192, rl.LightGray)
 	}
-
-	
 }
 
 func boardRender() {
@@ -110,8 +108,8 @@ func (c *C4) boardDebugRender() {
 		rl.DrawText("Current Collumn: "+strconv.FormatInt(int64(collCurrent), 10), offsetX, offsetY, height*5/192, rl.Beige)
 		rl.DrawText("Moves Made: "+strconv.FormatInt(int64(movesMade), 10), offsetX, 2*offsetY, height*5/192, rl.Beige)
 
-		for row := range c.board {
-			a := fmt.Sprint(c.board[row])
+		for row := range c.board.grid {
+			a := fmt.Sprint(c.board.grid[row])
 			rl.DrawText(a, width-2*offsetX-height*25/150, debPosY+offsetY+height*5/384, height*5/192, rl.Beige)
 			debPosY += height / 128 * 5
 		}

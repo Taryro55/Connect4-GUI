@@ -19,7 +19,7 @@ type C4 struct { // Board struct
 	turn  int32
 
 	gamers []Gamer
-	board [][]int32
+	board Board
 }
 
 type Vertice struct {
@@ -27,4 +27,13 @@ type Vertice struct {
 	yPos int32
 	xMag int32
 	yMag int32
+}
+
+type Board struct {
+	grid [][]int32
+	heights []int32
+	colls int32
+	rows int32
+	
+	moves int32
 }
