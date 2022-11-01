@@ -35,7 +35,6 @@ var (
 	sfxPaused 	bool
 
 	// main events
-	debug     bool = true
 	executing bool = true
 	debugMenu bool
 

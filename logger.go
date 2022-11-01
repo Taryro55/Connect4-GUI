@@ -56,13 +56,8 @@ func (l *LogDir) Fatal() *log.Logger {
 }
 
 func (l *LogDir) Debug() *log.Logger {
-	if debug {
-		getFilePath := SetLogFile()
-		return log.New(getFilePath, "DEBUG: ", log.Ldate|log.Ltime|log.Lshortfile)
-	} else {
-		// ! THIS CREATES AN ERROR WHEN DEBUG IS OFF. ITS INTENCIONAL TO REMEMBER TO REMOVE THE USELESS LOGGING.
-		return nil
-	}
+	getFilePath := SetLogFile()
+	return log.New(getFilePath, "DEBUG: ", log.Ldate|log.Ltime|log.Lshortfile)
 }
 
 func logging() *LogDir {
