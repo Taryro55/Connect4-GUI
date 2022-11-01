@@ -71,7 +71,7 @@ func (c *C4) configMenuLogic() {
 		if musicPaused {
 			rl.DrawCircle(580, 320, 20, rl.Red)
 		}
-		if !sfxOn {
+		if sfxPaused {
 			rl.DrawCircle(580, 370, 20, rl.Red)
 		}
 		if shouldBlink {
@@ -91,7 +91,7 @@ func (c *C4) configMenuLogic() {
 			case 0:
 				musicPaused = !musicPaused
 			case 1:
-				sfxOn = !sfxOn
+				sfxPaused = !sfxPaused
 			case 2:
 				fullScreen()
 			case 3:

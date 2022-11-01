@@ -8,6 +8,7 @@ import (
 func (c *C4) input() {
 	logger.Debug().Println("input() called.")
 
+
 	// Music toggle
 	if rl.IsKeyPressed(rl.KeyM) {
 		musicPaused = !musicPaused
@@ -26,6 +27,7 @@ func (c *C4) input() {
 	// Process events
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsMouseButtonPressed(rl.MouseRightButton) || rl.IsKeyPressed(rl.KeyEnter) {
 		continuePressed = true
+		rl.PlaySound(sfxPop)
 	} else if !rl.IsMouseButtonPressed(rl.MouseLeftButton) || !rl.IsMouseButtonPressed(rl.MouseRightButton) || !rl.IsKeyPressed(rl.KeyEnter) {
 		continuePressed = false
 	}

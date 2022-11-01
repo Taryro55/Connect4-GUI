@@ -20,6 +20,12 @@ func (c *C4) update() {
 		rl.ResumeMusicStream(music)
 	}
 
+	if sfxPaused {
+		rl.PauseSound(sfxPop)
+	} else if !sfxPaused {
+		rl.ResumeSound(sfxPop)
+	}
+
 	// Selection of oponent
 	if isEven(int(runningMilisecs * 2)) {
 		shouldBlink = true
@@ -50,11 +56,14 @@ func init() {
 	rl.SetTargetFPS(60)
 	rl.SetMouseScale(1.0, 1.0)
 
-	txrLogo = rl.LoadTexture(TXR_PATH + "/logo.png")
 
-	// Loads music
+	// Loads stuff
 	rl.InitAudioDevice()
-	music = rl.LoadMusicStream("./music/menu.mp3")
+
+	txrLogo = rl.LoadTexture(TXR_PATH + "/logo.png")
+	music = rl.LoadMusicStream(MUSIC_PATH + "/menu.mp3")
+	sfxPop = rl.LoadSound(SFX_PATH + "/pop.mp3")
+
 	musicPaused = false
 	rl.PlayMusicStream(music)
 }
@@ -64,6 +73,7 @@ func quit() {
 	logger.Debug().Println("quit() called.")
 
 	rl.UnloadTexture(txrLogo)
+	rl.UnloadSound(sfxPop)
 	rl.UnloadMusicStream(music)
 	rl.CloseAudioDevice()
 

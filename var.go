@@ -32,7 +32,7 @@ var (
 var (
 	// options
 	musicPaused bool
-	sfxOn 	=	true
+	sfxPaused 	bool
 
 	// main events
 	debug     bool = true
@@ -80,4 +80,5 @@ var (
 	// textures, vectors, any rl types.
 	txrLogo rl.Texture2D
 	music   rl.Music
+	sfxPop  rl.Sound
 )
