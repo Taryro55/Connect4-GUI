@@ -40,6 +40,8 @@ var (
 
 	// game events
 	gameWinner int32
+	winsP1 int64
+	winsP2 int64
 
 	// screen events
 	screenMenu    bool = true

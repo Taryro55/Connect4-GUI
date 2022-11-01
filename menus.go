@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"strconv"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
@@ -145,7 +146,9 @@ func (c *C4) boardMenuLogic() {
 
 		// render diff stuff acording to oponent
 		if !isOponentAI {
-			c.pvpRender("Game on! Humans compete!", "P1 Won!", "P2 Won!")
+			winP1 := "P1 won! Wins: " + strconv.FormatInt(winsP1, 10)
+			winP2 := "P2 won! Wins: " + strconv.FormatInt(winsP2, 10)
+			c.pvpRender("Game on! Humans compete!", winP1, winP2)
 			c.floatingCellRender()
 		} else if isOponentAI {
 			c.pvpRender("Game on! Machine v/s Human!", "You won!", "Bot wins")
@@ -166,8 +169,6 @@ func (c *C4) boardMenuLogic() {
 		}
 	}
 }
-
-
 
 func fullScreen() {
 	display := rl.GetCurrentMonitor()
@@ -193,6 +194,7 @@ func (c *C4) resetBoard() {
 
 // Return to the main Menu
 func (c *C4) backToMenu() {
+	winsP1, winsP2 = 0, 0
 	screenMenu = true
 	screenConf = false
 	screenOponent = false

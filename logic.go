@@ -106,8 +106,10 @@ func getWinner(b Board) {
 		gameWinner = 0
 	case 1:
 		gameWinner = 1
+		winsP1++
 	case 2:
 		gameWinner = 2
+		winsP2++
 	}
 }
 
