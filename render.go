@@ -39,6 +39,7 @@ func confMenuRender() {
 	rl.DrawText("Return", width/2-height*75/768, height-height/4+(7/2)*height*5/96, height*5/96, rl.LightGray)
 }
 
+// Render the blinking on the selected options
 func blinkRender(xPos, yPos, xMag, yMag int32) {
 	xMag, yMag = xMag-xPos, yMag-yPos
 	rl.DrawRectangleLines(
@@ -60,6 +61,7 @@ func oponentBlink(xPos int32) {
 		blinkOponentVer.yMag, rl.LightGray)
 }
 
+// Renders stuff while on gameplay
 func (c *C4) pvpRender(startText, p1WinText, p2WinText string) {
 	if movesMade != 42 {
 		switch gameWinner {
@@ -76,8 +78,8 @@ func (c *C4) pvpRender(startText, p1WinText, p2WinText string) {
 	}
 }
 
+// rectangle for the board
 func boardRender() {
-	// rectangle for the board
 	rl.DrawRectangle(
 		boardVer.xPos,
 		boardVer.yPos,
@@ -98,6 +100,7 @@ func (c *C4) floatingCellRender() {
 	}
 }
 
+// Renders misc stuff for the debug menu
 func (c *C4) boardDebugRender() {
 	debPosY = 0
 

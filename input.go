@@ -4,7 +4,7 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-// * input manages every single input avaliable.
+// * input manages almost every single input avaliable.
 func (c *C4) input() {
 	logger.Debug().Println("input() called.")
 
@@ -58,6 +58,9 @@ func (c *C4) input() {
 	}
 }
 
+// * Menus //
+// Manages input per menu
+
 func mainMenuInput() {
 	if rl.IsKeyPressed(rl.KeyDown) && mainMenuHover <= 1 {
 		mainMenuHover++
@@ -81,3 +84,4 @@ func oponentMenuInput() {
 		oponentMenuHover = false
 	}
 }
+// * End of Menus //

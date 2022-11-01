@@ -169,7 +169,6 @@ func (c *C4) boardMenuLogic() {
 
 
 
-
 func fullScreen() {
 	display := rl.GetCurrentMonitor()
 
