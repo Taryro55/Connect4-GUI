@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -32,7 +30,7 @@ func isWinDetected(l []int32) int32 {
 			if y == 4 {
 				return x
 			}
-		} 
+		}
 	}
 	return EMPTY
 }
@@ -79,9 +77,9 @@ func getDiagBoard(b Board) ([][]int32, [][]int32) {
 	return r, l
 }
 
-func getRow(c int32, b Board) int32 {
-	return b.heights[c]
-}
+// func getRow(c int32, b Board) int32 {
+// 	return b.heights[c]
+// }
 
 func getHoveringCol(i []int32, intg int32, X int32) int32 {
 	for k, v := range i {
@@ -92,15 +90,15 @@ func getHoveringCol(i []int32, intg int32, X int32) int32 {
 	return -1
 }
 
-func getValidColls(board Board) []int32 {
-	v := (make([]int32, board.colls))
-	for i, _ := range board.grid {
-		if isColValid(int32(i), board) {
-			v = append(v, int32(i))
-		}
-	}
-	return v
-}
+// func getValidColls(board Board) []int32 {
+// 	v := (make([]int32, board.colls))
+// 	for i, _ := range board.grid {
+// 		if isColValid(int32(i), board) {
+// 			v = append(v, int32(i))
+// 		}
+// 	}
+// 	return v
+// }
 
 func getWinner(b Board) {
 	switch getConnectedFours(b) {
@@ -125,7 +123,6 @@ func getConnectedFours(board Board) int32 {
 
 	// Detects on X
 	for row := range board.grid {
-		fmt.Println(board.grid[row])
 		if isWinDetected(board.grid[row]) != EMPTY {
 			return isWinDetected(board.grid[row])
 		}
@@ -175,10 +172,10 @@ func boardReset(board Board) {
 }
 
 // Changes the state of one of the points on the grid
-func boardDropPiece(b Board, col, state int32) bool {
-	b.grid[getRow(col, b)][col] = state
-	return true
-}
+// func boardDropPiece(b Board, col, state int32) bool {
+// 	b.grid[getRow(col, b)][col] = state
+// 	return true
+// }
 
 // * End of Board Funcs //
 

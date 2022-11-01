@@ -71,7 +71,7 @@ func (c *C4) configMenuLogic() {
 		if musicPaused {
 			rl.DrawCircle(580, 320, 20, rl.Red)
 		}
-		if soundPaused {
+		if !sfxOn {
 			rl.DrawCircle(580, 370, 20, rl.Red)
 		}
 		if shouldBlink {
@@ -91,7 +91,7 @@ func (c *C4) configMenuLogic() {
 			case 0:
 				musicPaused = !musicPaused
 			case 1:
-				soundPaused = !soundPaused
+				sfxOn = !sfxOn
 			case 2:
 				fullScreen()
 			case 3:
@@ -113,7 +113,7 @@ func (c *C4) oponentMenuLogic() {
 			if oponentMenuHover {
 				xPos += (4 * gridSize)
 			}
-			oponentBlink(xPos) // TODO deprecated, replace with blinkRender()
+			oponentBlink(xPos)
 		}
 
 		if continuePressed {
@@ -166,7 +166,6 @@ func (c *C4) boardMenuLogic() {
 		}
 	}
 }
-
 
 
 

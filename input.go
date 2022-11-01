@@ -12,7 +12,6 @@ func (c *C4) input() {
 	if rl.IsKeyPressed(rl.KeyM) {
 		musicPaused = !musicPaused
 	}
-
 	// Back to menu
 	if rl.IsKeyPressed(rl.KeyBackspace) {
 		c.resetBoard()
@@ -32,7 +31,7 @@ func (c *C4) input() {
 	}
 
 	// Checks to end game & for draws
-	if movesMade == 42 || gameWinner != 0{
+	if movesMade == 42 || gameWinner != 0 {
 		if rl.IsKeyDown(rl.KeyEnter) {
 			c.resetBoard()
 		}

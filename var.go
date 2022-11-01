@@ -2,7 +2,6 @@ package main
 
 import (
 	"math"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -22,7 +21,7 @@ var (
 		height / 12 * (40 / 35 * 8),
 		(height / 8),
 		(height / 16)}
-	boardVer     = Vertice{ // vertice and magnitude on X & Y
+	boardVer = Vertice{ // vertice and magnitude on X & Y
 		(width / 2) - (gridSize*7)/2,
 		height - gridSize*6 - offsetY,
 		gridSize * 7,
@@ -33,7 +32,7 @@ var (
 var (
 	// options
 	musicPaused bool
-	soundPaused bool
+	sfxOn 	=	true
 
 	// main events
 	debug     bool = true
@@ -73,21 +72,12 @@ var (
 	debPosY         int32
 	collsPos        []int32
 	collCurrent     int32
-	collHeight      []int
 	movesMade       int
-
-	coord int32
-	oldP  = 0
-	y     = 0
-	tempSlice = []int32{}
+	coord           int32
 )
 
 var (
 	// textures, vectors, any rl types.
-	txrWhite      rl.Texture2D
-	txrBlack      rl.Texture2D
-	txrBoard      rl.Texture2D
-	txrBackground rl.Texture2D
-	txrLogo       rl.Texture2D
-	music         rl.Music
+	txrLogo rl.Texture2D
+	music   rl.Music
 )

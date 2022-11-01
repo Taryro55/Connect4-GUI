@@ -34,8 +34,6 @@ func confMenuRender() {
 	rl.DrawText("Sounds", width/2-height*35/384, height*175/384, height*5/96, rl.LightGray)
 	rl.DrawText("Fullscreen", width/2-height*35/384, height*25/48, height*5/96, rl.LightGray)
 	rl.DrawText("Return", width/2-height*75/768, height-height/4+(7/2)*height*5/96, height*5/96, rl.LightGray)
-	// add a back to menu
-
 }
 
 func blinkRender(xPos, yPos, xMag, yMag int32) {
@@ -46,7 +44,6 @@ func blinkRender(xPos, yPos, xMag, yMag int32) {
 
 // * Oponent selection screen
 func oponentMenuRender() {
-	// TODO Change Music when here
 	rl.DrawText("Do you wish to play with someone or against a bot?", width*10/100, height/12, height*5/96, rl.LightGray)
 
 	rl.DrawText("PvP", (width/2)-(2*gridSize), height/12*(40/35*8), height*7/128, rl.LightGray)

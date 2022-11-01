@@ -1,12 +1,9 @@
 package main
 
 import (
-	// "math"
 	"math/rand"
 	"time"
 )
-
-// rl "github.com/gen2brain/raylib-go/raylib"
 
 func (c *C4) aiMove() {
 	s := rand.NewSource(time.Now().UnixNano())

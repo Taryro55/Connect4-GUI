@@ -50,11 +50,6 @@ func init() {
 	rl.SetTargetFPS(60)
 	rl.SetMouseScale(1.0, 1.0)
 
-	// textures
-	txrWhite = rl.LoadTexture(TXR_PATH + "/red.jpg")
-	txrBlack = rl.LoadTexture(TXR_PATH + "/oreo.png")
-	txrBoard = rl.LoadTexture(TXR_PATH + "/board.png")
-	txrBackground = rl.LoadTexture(TXR_PATH + "/background.jpg")
 	txrLogo = rl.LoadTexture(TXR_PATH + "/logo.png")
 
 	// Loads music
@@ -68,12 +63,7 @@ func init() {
 func quit() {
 	logger.Debug().Println("quit() called.")
 
-	rl.UnloadTexture(txrWhite)
-	rl.UnloadTexture(txrBlack)
-	rl.UnloadTexture(txrBoard)
-	rl.UnloadTexture(txrBackground)
 	rl.UnloadTexture(txrLogo)
-
 	rl.UnloadMusicStream(music)
 	rl.CloseAudioDevice()
 
