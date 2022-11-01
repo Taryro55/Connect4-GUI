@@ -21,6 +21,9 @@ func (c *C4) render() {
 // * draws the main menu
 func mainMenuRender() {
 	rl.DrawText("Connect 4!", width/2-height*162/768, height/12, height*5/64, rl.LightGray)
+
+	rl.DrawText("Controls: \n  Arrows\n  Clicks\n  Enter\n  Backspace", height*17/384, height*13/384, height/32, rl.LightGray)
+
 	rl.DrawText("Start!", width/2-height*35/384, height-height/4+height/32, height/16, rl.LightGray)
 	rl.DrawText("Config", width/2-height*5/64, height-height/4+2*height*5/96, height*5/96, rl.LightGray)
 	rl.DrawText("Quit", width/2-height*15/256, height-height/4+(7/2)*height*5/96, height*5/96, rl.LightGray)

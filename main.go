@@ -56,7 +56,6 @@ func init() {
 	rl.SetTargetFPS(60)
 	rl.SetMouseScale(1.0, 1.0)
 
-
 	// Loads stuff
 	rl.InitAudioDevice()
 
