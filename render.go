@@ -69,7 +69,7 @@ func (c *C4) pvpRender(startText, p1WinText, p2WinText string) {
 		}
 	}
 	if movesMade == 42 || gameWinner != 0 {
-		rl.DrawText("Press enter to reset board", width*10/100, height/6, height*7/192, rl.LightGray)
+		rl.DrawText("Press enter twice to reset board", width*10/100, height/6, height*7/192, rl.LightGray)
 	}
 }
 
