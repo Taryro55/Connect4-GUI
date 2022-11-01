@@ -12,7 +12,7 @@ func (c *C4) update() {
 
 	executing = !rl.WindowShouldClose()
 
-	// Music
+	// Music managment
 	rl.UpdateMusicStream(music)
 	if musicPaused {
 		rl.PauseMusicStream(music)
@@ -20,6 +20,7 @@ func (c *C4) update() {
 		rl.ResumeMusicStream(music)
 	}
 
+	// Sfx managment
 	if sfxPaused {
 		rl.PauseSound(sfxPop)
 	} else if !sfxPaused {
@@ -93,6 +94,7 @@ func main() {
 
 		// I just wanna say that dark chocolate is underrated - Lem 10/25/2022
 		// Overdose on dark chocolate - Lem 10/25/2022
+		// A hot woman wouldn't stop talking to me - Lem 1/11/2022
 	}
 	quit()
 }
