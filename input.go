@@ -61,7 +61,7 @@ func (c *C4) input() {
 func mainMenuInput() {
 	if rl.IsKeyPressed(rl.KeyDown) && mainMenuHover <= 1 {
 		mainMenuHover++
-	} else if rl.IsKeyPressed(rl.KeyUp) && mainMenuHover >= 0 {
+	} else if rl.IsKeyPressed(rl.KeyUp) && mainMenuHover > 0 {
 		mainMenuHover--
 	}
 }
