@@ -96,6 +96,11 @@ func main() {
 		// Overdose on dark chocolate - Lem 10/25/2022
 		// A hot woman wouldn't stop talking to me - Lem 1/11/2022
 		// The earth is flat right guys - Lem 2/11/2022
+		// Who coded green - Lem 2/11/2022
+		// Did you know that when you say foward your mouth goes foward and when you say backwards your mouth goes backwards - Lem 3/11/2022
+		// If I throw a rock to this the whole world will explode - Lem 8/11/2022
+		// Did you know that everyone thats older than you will always be older than you - Lem 15/11/202
+		
 	}
 	quit()
 }
